@@ -1,0 +1,26 @@
+[
+{"roleTitle": "Software Development Internship",
+"company": "Amazon",
+"link": "https://www.amazon.jobs/jobs/1079843",
+"logo": "Amazon-logo-RGB-DRK.png",
+"desc": "Are you excited about solving operational challenges by creating state of the art systems? Implement your new ideas and challenge yourself to build tools that make an impact for the most customer-centric company on Earth"
+},
+{"roleTitle": "Business Intelligence Internship",
+"company": "Amazon",
+"link": "https://www.amazon.jobs/jobs/1079919",
+"logo": "Amazon-logo-RGB-DRK.png",
+"desc": "Does working as a data guru in a results-oriented environment sound fun to you? You'll learn to use and apply AWS for data pipe-lining, data extraction and data modelling. You'll support your team on cost-reduction/efficiency-improvement projects as well as business decision making processes"
+},
+{"roleTitle": "Applied Science Internship",
+"company": "Amazon",
+"link": "https://www.amazon.jobs/jobs/1079829",
+"logo": "Amazon-logo-RGB-DRK.png",
+"desc": "Apply your skills to model huge datasets and create state of the art algorithms to solve real world problems."
+},
+{"roleTitle": "Data scientist",
+"company": "the AI Core",
+"link": "https://meetings.hubspot.com/harryaberg/office-hour",
+"logo": "ai-core.png",
+"desc": "Help us get actionable insights from our data"
+}
+]

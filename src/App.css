@@ -1,0 +1,89 @@
+:root {
+  /* COLORS */
+  --purple: #fee2f8;
+  --violet:#ad82ce;
+  --blue:#8daae0;
+  --cream: #fff1d0;
+  --grey: grey;
+  --green: rgb(124, 194, 124);
+  --red: rgb(243, 89, 89);
+  --orange: #ff9933;
+  --nblue: #0066ff;
+  --white: white;
+  --beige: #e1c699;
+  --black: black;
+  --nude: #ebc8b2;
+  --nude: #fbf0d9;
+  --navy: #1E144D;
+  --coral: #ff7b67;
+
+  --nude: #FFFFFF;
+  --lilac: #BCA2F2;
+  --green: #89C497;
+  --pink: #FFC8DB;
+  --orange: #ff822e;
+  --blue: #C6E0F5;
+  --grey: #707070;
+  --navy: #1E144D;
+
+  /* COLORS */
+  --color1: black;
+  --color1g: white;
+  background-color: var(--color1);
+
+  --color2: var(--orange);
+  --color2g: #ff9b58; 
+
+  --textColor: var(--orange);
+  
+  color: var(--textColor);
+
+  /* FONTS */
+  --font1: "Montserrat";
+  /* --font2: comfortaa; */
+  --font2: "Montserrat";
+  --font3: poppins;
+
+  /* FONT SIZING */
+  --large: 48px;
+  --medium: 24px;
+  --small: 16px;
+  --large-desktop: 40px;
+  --medium-desktop: 24px;
+  --small-desktop: 10px;
+  --nav-item-size: 5vw;
+
+  /* MISC */
+  text-align: center;
+  --shadow-depth: 4px;
+  --radius: 2px;
+
+  --navbar-height: 8vh;
+  --tab-height: 8vh;
+
+  --desktop-navbar-height: 8vh;
+
+  /* BLURRED SHADOW FOR CONTRAST OF ELEMENTS AGAINST BACKGROUND */
+  --shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  /* DEVICE BREAKPOINTS */
+  --mobile: 480px;
+  --tablet: 768px;
+  --desktop: 992px;
+}
+
+html {
+  /* scroll-behavior: smooth; */
+  /* color: #525f7f; */
+  font-family: var(--font1);
+}
+
+a​:visited, a:link, a:hover, a {  
+  color: var(--color1); 
+  text-decoration: none;
+}
+
+.text-link {
+  text-decoration: underline;
+  cursor: pointer;
+}

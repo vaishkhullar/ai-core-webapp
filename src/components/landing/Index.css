@@ -1,0 +1,288 @@
+.index-body {
+  margin-bottom: 0 !important;
+}
+
+.index-body > * :not(.product-marquee) {
+}
+
+.first-btn {
+    margin-bottom: 36px !important;
+    width: 40vw !important;
+    position: relative;       /* necessary to contain the shine*** */
+}
+
+.shine-container {
+  padding: inherit;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+}
+
+.shine {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 30px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -100px;
+  transform: skewX(-30deg);
+  animation: shine 3s infinite;
+  animation-delay: 2s;
+}
+
+@keyframes shine {
+  100% {
+    transform: translateX(80vw) skewX(-30deg);
+    background-color: rgba(0, 0, 0, 0)
+  }
+}
+
+.fold {
+    height: 80vh;
+    min-height: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    /* background-image: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, 0.9)), url("../images/group.jpg"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* color: #fbf0d9; */
+    overflow-x: hidden;
+    position: relative;
+}
+
+.fold > * {
+  margin: 0 auto;
+}
+
+
+.fold-background {
+    background-size: 100vw 100vh;
+    background-repeat: no-repeat;
+    position: absolute;
+    opacity: 0.5;
+    height: inherit;
+    width: 100vw;
+}
+
+#copy-heading {
+  margin: 30px auto;
+}
+
+#copy-subheading {
+  margin: 10px auto;
+}
+
+.lets-do-this {
+  margin: 3vw auto;
+}
+
+#first-title {
+  font-size: 60px;
+  position: absolute; top: 20px; left: 20px; text-align: left; z-index: 1;
+  transition: 0.5s;
+}
+
+@media (min-width: 550px) {
+  #first-title {
+    top: 40px;
+    left: 40px;
+  }
+}
+
+#section-2 {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+#second-title {
+  font-family: var(--font1);
+  margin: auto;
+  margin-top: 5vw;
+  margin-bottom: 3vw;
+}
+
+#how-it-works {
+  margin: auto;
+}
+
+
+@media (min-width: 800px) {
+  #first-title {
+
+  }
+}
+
+.showcase-image {
+  margin: auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.showcase-image > img {
+  --delivery-image: 25vw;
+  max-height: var(--delivery-image);
+  max-width: var(--delivery-image);
+  margin: auto;
+}
+
+.how-it-works-step {
+  display: flex;
+  width: 80vw;
+  justify-content: space-between;
+  justify-content: center;
+}
+
+.how-it-works-step > div {
+  width: 80%;
+}
+
+.icon {
+  max-height: 80px;
+}
+
+@media (max-width: 500px) {
+  .icon {
+    max-height: 40px;
+  }
+
+  .how-it-works-step > div {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 800px) {
+  #section-2 {
+      display: initial;
+  }
+}
+
+#lets-do-this {
+  animation: slideOnLoad ease 1.5s 1;
+}
+
+@keyframes slideOnLoad
+{
+  0% {left:-700px;}
+  100% {left:0px;}
+}
+@-webkit-keyframes slideOnLoad
+{
+  0% {left:-700px;}
+  100% {left:-0px;}
+}
+
+.rolling-container {
+  width: 100vw;
+  margin-bottom: 50px;
+}
+
+.rolling {
+  transform: translateX(100vw);
+  animation: roll-in 2s ease-in-out 1 forwards;
+  width: 100vw;
+}
+
+.rolling2 {
+  animation-delay: 2s
+}
+.rolling3 {
+  animation-delay: 4s
+}
+.rolling4 {
+  animation-delay: 6s
+}
+.rolling5 {
+  animation-delay: 8s
+}
+
+
+.roll-child {
+}
+
+.p {
+  animation: name duration timing-function delay iteration-count direction fill-mode;
+}
+
+@keyframes roll-in  {
+  0% {
+    transform: translateX(100vw)
+  }
+  100% {
+    transform: translateX(0vw)
+  }
+}
+
+.roll-out {
+  animation: roll-out 2s ease-out 1 forwards;
+}
+
+@keyframes roll-out {
+  0% {
+    transform: translateX(0vw)
+  }
+  100% {
+    transform: translateX(-100vw)
+  }
+}
+
+
+.hero-image {
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2)), url("../images/hero.jpg");
+
+  /* Set a specific height */
+  height: 92vh;
+  width: 100%;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+
+/* @media (min-width: 1500px) {
+  .hero-text {
+    font-size: 100px;
+    padding: 0px 25px;
+    max-width: auto;
+    width: 50%;
+  }
+} */
+
+
+.subtitle-tex  {
+  font-family: var(--font2);
+  font-size: 30px;
+}
+.title-text {
+  margin-bottom: 5px;
+}
+
+.tab-font {
+  font-size: 12px !important;
+}
+@media (min-width: 800px) {
+  .tab-font {
+    font-size: 20px !important;
+  }
+}
+
+.get-started {
+}
