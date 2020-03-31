@@ -225,15 +225,13 @@ class _Routes extends Component {
             <Route path="/events" component={Workshops} />
             <Route path="/partnerships" component={Partnerships} />
             <Route path="/about" component={About} />
-            <Route path="/openhacking" component={OpenHacking} />
+            {/* <Route path="/openhacking" component={OpenHacking} /> */}
             <Route path="/privacy-policy" component={PrivacyPolicy} />
-            <Route path="/classroom" component={Classroom} />
+            <ProtectedRoute path="/classroom" component={Classroom} />
             <Route path="/" component={LandingIndex} />
-
             <Route component={NotFound} path=""/> 
         </Switch>
     }
-
 }
 
 const Routes = withRouter(_Routes)
