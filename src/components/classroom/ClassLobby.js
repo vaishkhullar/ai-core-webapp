@@ -53,7 +53,7 @@ class ClassLobby extends Component {
                     volume='0'
                 />
                 <div className="forum">
-                    {/* <Forum id='first-online-class' /> */}
+                    <Forum id='first-online-class' />
 
                 </div>
             {/* </div> */}

@@ -293,7 +293,7 @@ class Comment extends Component {
             </div>
             <img onClick={()=>{this.setState({replying: true})}} src={reply} className="reply-btn"/>
         </div>
-        <div className="replies">
+        {/* <div className="replies">
             {
                 this.props.replies.map((r)=>{return(
                     <div className="reply">{r.content ? r.content : r}</div> // ternary operator is for backward compatability: originally r was just a string of the content, now it's a dict with a key "content"
@@ -308,7 +308,7 @@ class Comment extends Component {
             </div>
             :
             null
-        }
+        } */}
         </>
     )}
 }
