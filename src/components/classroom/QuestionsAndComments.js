@@ -218,14 +218,15 @@ export default class Questions extends Component {
 
     render() {
         var comments = this.state.comments
-        var comment_ids = Object.keys(comments).sort((a, b)=>{      // sort by number of upvotes
-            console.log(a.votes)
-            a = comments[a]
-            b = comments[b]
-            var a_votes = a.votes.filter((v) => {return v.upvote}).length - a.votes.filter((v) => {return !v.upvote}).length
-            var b_votes = b.votes.filter((v) => {return v.upvote}).length - b.votes.filter((v) => {return !v.upvote}).length
-            return b_votes- a_votes
-        })
+        var comment_ids = Object.keys(comments)
+        // .sort((a, b)=>{      // sort by number of upvotes
+        //     console.log(a.votes)
+        //     a = comments[a]
+        //     b = comments[b]
+        //     var a_votes = a.votes.filter((v) => {return v.upvote}).length - a.votes.filter((v) => {return !v.upvote}).length
+        //     var b_votes = b.votes.filter((v) => {return v.upvote}).length - b.votes.filter((v) => {return !v.upvote}).length
+        //     return b_votes- a_votes
+        // })
         return (
             <div css={style} >
                 {/* <div css={css`padding-bottom: 10px;`}>
