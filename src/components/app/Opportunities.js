@@ -58,8 +58,6 @@ const style = css`
 `
 
 const Opportunity = (props) => {
-    console.log(props.logo)
-    console.log(Object.keys(logos))
     return (
     <div className='opportunity'>
         <div className="heading">
@@ -92,7 +90,9 @@ class Opportunities extends Component {
                     opportunities: JSON.parse(opportunities.body), 
                     loading: false
                 }, 
-                () => {console.log(this.state.opportunities)}
+                () => {
+                    // console.log(this.state.opportunities)
+                }
             )
         })
     }

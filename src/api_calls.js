@@ -4,7 +4,7 @@ export const makeGetRequest = (endpoint, callback, handleErr=(err)=>{console.log
     Auth.currentSession()
     .then(
         data => {
-            console.log('currentSession:', data)
+            // console.log('currentSession:', data)
             var IDToken = data.getIdToken().getJwtToken()
             var options = {
                 headers: {
@@ -13,13 +13,13 @@ export const makeGetRequest = (endpoint, callback, handleErr=(err)=>{console.log
                 }
             }
             var url = window.api_root + endpoint
-            console.log('Making request to:', url)
+            // console.log('Making request to:', url)
             fetch(url, options)
             .then(
                 (data) => {
-                    console.log(`Response from ${endpoint}:`)
+                    // console.log(`Response from ${endpoint}:`)
                     data = data.json()
-                    console.log('RESPONSE JSON:', data)
+                    // console.log('RESPONSE JSON:', data)
                     return data
                 }
             )
@@ -42,7 +42,7 @@ export const makePostRequest = (endpoint, body, callback, handleErr=(err)=>{cons
     Auth.currentSession()
     .then(
         data => {
-            console.log('currentSession:', data)
+            // console.log('currentSession:', data)
             var IDToken = data.getIdToken().getJwtToken()
             // console.log(IDToken)
             // console.log(JSON.stringify(body))
@@ -56,7 +56,7 @@ export const makePostRequest = (endpoint, body, callback, handleErr=(err)=>{cons
                 }
             }
             var url = window.api_root + endpoint
-            console.log('Making request to:', url)
+            // console.log('Making request to:', url)
             fetch(url , options) 
             .then(
                 (data) => {

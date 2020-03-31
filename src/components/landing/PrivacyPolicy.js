@@ -1,9 +1,15 @@
 import React from "react"
 import { connect } from "react-redux"
+import { css, jsx } from "@emotion/core"
+/** @jsx jsx */
+
+const style = css`
+    font-family: var(--font1);
+`
 
 var PP = (props) => {
     return (
-        <>
+        <div css={style}>
         <h1>Privacy Policy</h1>
 
 
@@ -127,7 +133,7 @@ var PP = (props) => {
         <ul>
           
         </ul>
-        </>
+        </div>
     )
 }
 

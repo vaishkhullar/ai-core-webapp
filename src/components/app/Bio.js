@@ -51,9 +51,12 @@ class Bio extends Component {
     // }
 
     onBioChange = (e) => {
-        console.log('OLD BIO:', this.state.bio)
+        // console.log('OLD BIO:', this.state.bio)
         this.setState({bio: e.target.value},
-            ()=>{console.log('NEW BIO:', this.state.bio)})
+            ()=>{
+                // console.log('NEW BIO:', this.state.bio)
+            }
+            )
     }
 
     onBioSave = () => {

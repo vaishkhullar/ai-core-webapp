@@ -53,7 +53,7 @@ class _Notification extends Component {
     }
 
     getTime = () => {
-        console.log('EPOCH:', this.props.epoch)
+        // console.log('EPOCH:', this.props.epoch)
         var seconds = Math.round((new Date() - new Date(this.props.epoch*1000)) / 1000)
         var minutes = Math.round(seconds / 60)
         var hours = Math.round(minutes / 60)
@@ -95,14 +95,14 @@ export const Notification = connect(null, dispathToProps)(_Notification)
 class _DropDownNotification extends Component {
 
     render() {
-        console.log('rendering notify')
-        console.log('show:', this.props.show)
+        // console.log('rendering notify')
+        // console.log('show:', this.props.show)
         if (this.props.show) {
             setTimeout(
                 this.props.hide,
                 5000
             )
-            console.log('timing')
+            // console.log('timing')
         }
         return (
             <div css={dropdownstyle} style={this.props.show ? {top: '20px'} :{top: '-1000px'}}>

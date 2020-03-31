@@ -31,7 +31,7 @@ var topical_imgs = Object.values(importAll(require.context('../../images/events/
 
 var brands = importAll(require.context('../../images/brands'), false)
 brands = Object.values(brands)
-console.log('BRANDS:', brands)
+// console.log('BRANDS:', brands)
 
 const style = css`
     max-height: 100px;

@@ -23,6 +23,7 @@ import createHistory from "history/createBrowserHistory"
 import Partnerships from "./components/landing/Partnerships";
 import About from "./components/landing/About";
 import OpenHacking from "./components/landing/OpenHacking";
+import PrivacyPolicy from "./components/landing/PrivacyPolicy";
 export const history = createHistory()
 history.listen((location, action) => {
     window.scrollTo(0, 0)
@@ -34,6 +35,7 @@ Amplify.configure({
 
         // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
         identityPoolId: 'eu-west-2:a9b6789c-da76-4a3e-ae38-93373981ff11',
+        // identityPoolId: 'eu-west-2:855cf335-a3b7-4b7f-b47d-dc9fd044bd9b',
         
         // REQUIRED - Amazon Cognito Region
         region: 'eu-west-2',
@@ -140,7 +142,7 @@ const app = (state={}, action) => {
 }
 
 const user = (state={}, action) => {
-    console.log('action:', action)
+    // console.log('action:', action)
     switch (action.type) {
         case "SET_USER":
             // console.log('update:', action.update)
@@ -148,9 +150,9 @@ const user = (state={}, action) => {
                 ...state,
                 ...action.update
             }
-            console.log('got email?', Object.keys(state).includes('email'))
+            // console.log('got email?', Object.keys(state).includes('email'))
             if (!Object.keys(state).includes('email')) { // if email not yet in update. I.E. we only just pulled down the user data (they just logged in)
-                console.log('just got email')
+                // console.log('just got email')
                 window.analytics.identify(s['user-id'], // identify them
                     {
                         email: s.email,
@@ -161,15 +163,15 @@ const user = (state={}, action) => {
             }
             // console.log('new user:', s)
             return s
-        case "RATE_COMPANY":
-            var company_ratings = {
-                [action.company]: action.rating,
-                ...state.company_ratings
-            }
-            // console.log('new ratings:', company_ratings)
-            var c = {...state, company_ratings}
-            // console.log('new state:', c)
-            return c
+        // case "RATE_COMPANY":
+        //     var company_ratings = {
+        //         [action.company]: action.rating,
+        //         ...state.company_ratings
+        //     }
+        //     // console.log('new ratings:', company_ratings)
+        //     var c = {...state, company_ratings}
+        //     // console.log('new state:', c)
+        //     return c
             
         default:
             return {
@@ -180,6 +182,7 @@ const user = (state={}, action) => {
                 about: {},
                 goals: [],
                 notifications: [],
+                rep: 0,
                 ...state
             }
     }
@@ -197,7 +200,7 @@ const reducer = combineReducers({
 export const store = createStore(reducer)
 
 // GET INITIAL DATA
-makeGetRequest('app/user/info', (update)=>{store.dispatch({type: "SET_USER", update}); console.log('UPDDDDATE:', update); })
+makeGetRequest('app/user/info', (update)=>{store.dispatch({type: "SET_USER", update}); })
 makeGetRequest('app/user/notifications', (notifications)=>{store.dispatch({type: "SET_USER", update: {notifications}})})
 
 class _Routes extends Component {
@@ -221,7 +224,9 @@ class _Routes extends Component {
             <Route path="/partnerships" component={Partnerships} />
             <Route path="/about" component={About} />
             <Route path="/openhacking" component={OpenHacking} />
+            <Route path="/privacy-policy" component={PrivacyPolicy} />
             <Route path="/" component={LandingIndex} />
+
             <Route component={NotFound} path=""/> 
         </Switch>
     }

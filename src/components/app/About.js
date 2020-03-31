@@ -24,7 +24,7 @@ class About extends Component {
     render() {
         var about = this.props.about
         delete about['slide_idx']
-        console.log('ABOUT:', about)
+        // console.log('ABOUT:', about)
         return (
             <div css={panel}>
                 <div className="title">

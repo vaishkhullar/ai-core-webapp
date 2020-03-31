@@ -93,7 +93,6 @@ const style = css`
 export default class Skills extends Component {
     constructor(props) {
         super(props)
-        console.log('PORPS:', props)
         this.state = {
             allOptions: this.props.allOptions, 
             options: [],
@@ -103,21 +102,17 @@ export default class Skills extends Component {
    }
 
     componentDidUpdate = () => {
-        console.log(this.props.options)
         if (this.props.options && this.state.options != this.props.options) {      // if style props passed and state is not equal
             this.setState({options: this.props.options})                          // equate the options
         }
     }
 
     handleOptionChange = (e) => {
-        console.log(this.state.options)
         var options = this.state.options
         if (this.props.options.includes(e.target.id)) {
-            console.log('removing style')
             options = options.filter( (item) => {return item != e.target.id} )
         }
         else {
-            console.log('addign style')
             options.push(e.target.id)
         }
         this.props.onChange(options)

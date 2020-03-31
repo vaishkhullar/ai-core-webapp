@@ -46,7 +46,6 @@ class Companies extends Component {
     }
 
     render() {
-        console.log('cos:', this.props.company_ratings)
         return (
             <div css={css`margin-bottom: 20px`}>
                 <div css={css`font-family: var(--font1); font-size: 22px; font-weight: 100; padding: 10px;`}>

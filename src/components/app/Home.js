@@ -13,6 +13,7 @@ import { css, jsx } from "@emotion/core"
 import { faGlobe as opportunityIcon } from '@fortawesome/free-solid-svg-icons';
 import { faProjectDiagram as projectIcon } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt as eventsIcon } from '@fortawesome/free-solid-svg-icons';
+import { faUniversity as classroomIcon } from '@fortawesome/free-solid-svg-icons';
 
 
 class Home extends Component {
@@ -49,11 +50,11 @@ class Home extends Component {
                         title: 'Projects',
                         faIcon: projectIcon
                     },
-                    {
-                        to: "app/classroom",
-                        title: 'Classroom',
-                        faIcon: projectIcon
-                    },
+                    // {
+                    //     to: "app/classroom",
+                    //     title: 'Classroom',
+                    //     faIcon: classroomIcon
+                    // },
                     // {
             //     // to: '/app/projects',
             //     title: 'Battle',

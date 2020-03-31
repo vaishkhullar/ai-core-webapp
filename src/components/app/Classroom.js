@@ -7,6 +7,7 @@ import { Button, panel } from "mvp-webapp"
 import { makeGetRequest } from "../../api_calls";
 import { Auth } from "aws-amplify"
 import AWS from "aws-sdk"
+// import viewer from "./viewer"
 
 const style = css`
     font-family: var(--font1);
@@ -71,6 +72,11 @@ const style = css`
             margin: 10px;
         }
     }
+
+    video {
+        padding: 20px;
+        background-color: red;
+    }
 `
 
 class Classroom extends Component {
@@ -88,31 +94,45 @@ class Classroom extends Component {
         //         accessToken: data.accessToken
         //     }
         // });
+
+        const localView = document.getElementsByTagName('video')[0];
+        const remoteView = document.getElementsByTagName('video')[1];
+
+         const authuser = await Auth.currentAuthenticatedUser()
+        console.log('current auth user;')
+        console.log(authuser)
         // console.log('KEYS:', keys)
          const data = await Auth.currentCredentials()
         console.log('CREDENTIAL DATA;')
         console.log(data)
 
         const region = 'eu-west-2'
+        // const accessKeyId = 'AKIAI2I4KJ72TG2NI3CA' 
+        // const secretAccessKey = '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'
+
         const accessKeyId = data.accessKeyId
         const secretAccessKey = data.secretAccessKey
+        const sessionToken = data.sessionToken
         const channelARN = 'arn:aws:kinesisvideo:eu-west-2:251926666850:channel/test-channel/1584463852821'
+        const clientId = 'bfilansd'
 
         const kinesisVideoClient = new AWS.KinesisVideo({
             region,
             accessKeyId,
             secretAccessKey,
+            sessionToken
         });
-        console.log(kinesisVideoClient)
-        // kinesisVideoClient.createStram()
+
         const getSignalingChannelEndpointResponse = await kinesisVideoClient.getSignalingChannelEndpoint({
-                ChannelARN: channelARN,
-                SingleMasterChannelEndpointConfiguration: {
-                    Protocols: ['WSS', 'HTTPS'],
-                    Role: Role.VIEWER,
-                },
-            })
-            .promise();
+            ChannelARN: channelARN,
+            SingleMasterChannelEndpointConfiguration: {
+                Protocols: ['WSS', 'HTTPS'],
+                Role: Role.VIEWER,
+            },
+        })
+        .promise();
+
+        console.log(getSignalingChannelEndpointResponse)
               
         const endpointsByProtocol = getSignalingChannelEndpointResponse.ResourceEndpointList.reduce((endpoints, endpoint) => {
             endpoints[endpoint.Protocol] = endpoint.ResourceEndpoint;
@@ -123,6 +143,7 @@ class Classroom extends Component {
             region,
             accessKeyId,
             secretAccessKey,
+            sessionToken,
             endpoint: endpointsByProtocol.HTTPS,
         });
 
@@ -143,15 +164,83 @@ class Classroom extends Component {
         );
         
         const peerConnection = new RTCPeerConnection({ iceServers });
- 
 
+        const signalingClient = new SignalingClient({
+            channelARN,
+            channelEndpoint: endpointsByProtocol.WSS,
+            clientId,
+            role: Role.VIEWER,
+            region,
+            credentials: {
+                accessKeyId,
+                secretAccessKey,
+                sessionToken
+            },
+        });
 
-        // // makeGetRequest('app/user/stream', (r)=>{console.log('stream response:', r)})
-        // this.sc = SignalingClient({
-        //     role: 'MASTER',
-        //     channelARN: 'arn:aws:kinesisvideo:eu-west-2:251926666850:channel/test-channel/1584463852821',
-            
-        // })
+        signalingClient.on('open', async () => {
+            // Get a stream from the webcam, add it to the peer connection, and display it in the local view
+            try {
+                const localStream = await navigator.mediaDevices.getUserMedia({
+                    // video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+                    video: { width: { ideal: 640}, height: { ideal: 360 } },
+                    audio: true,
+                });
+
+                console.log(localStream.getTracks())
+                localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+                localView.srcObject = localStream;
+            } catch (e) {
+                // Could not find webcam
+                return;
+            }
+
+            // Create an SDP offer and send it to the master
+            // const offer = await viewer.peerConnection.createOffer({
+            //     offerToReceiveAudio: true,
+            //     offerToReceiveVideo: true,
+            // });
+            // await peerConnection.setLocalDescription(offer);
+            // signalingClient.sendSdpOffer(viewer.peerConnection.localDescription);
+        });
+
+        // When the SDP answer is received back from the master, add it to the peer connection.
+        signalingClient.on('sdpAnswer', async answer => {
+            await peerConnection.setRemoteDescription(answer);
+        });
+
+        // When an ICE candidate is received from the master, add it to the peer connection.
+        signalingClient.on('iceCandidate', candidate => {
+            peerConnection.addIceCandidate(candidate);
+        });
+
+        signalingClient.on('close', () => {
+            // Handle client closures
+        });
+
+        signalingClient.on('error', error => {
+            // Handle client errors
+        });
+
+        // Send any ICE candidates generated by the peer connection to the other peer
+        peerConnection.addEventListener('icecandidate', ({ candidate }) => {
+            if (candidate) {
+                signalingClient.sendIceCandidate(candidate);
+            } else {
+                // No more ICE candidates will be generated
+            }
+        });
+
+        // // As remote tracks are received, add them to the remote view
+        // peerConnection.addEventListener('track', event => {
+        //     if (remoteView.srcObject) {
+        //         return;
+        //     }
+        //     remoteView.srcObject = event.streams[0];
+        // });
+
+        // signalingClient.open();
     }
 
     render() {
@@ -161,7 +250,8 @@ class Classroom extends Component {
             // <video src={} />
 
             <div css={style}>
-                {/* <video src={} /> */}
+                <video  />
+                <video  />
                 <div className="title">
                     {this.props.title}
                 </div>

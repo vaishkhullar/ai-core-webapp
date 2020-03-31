@@ -63,14 +63,16 @@ export class ProtectedRoute extends Component {
       this.setState({sess: true, ready: true})
       Auth.currentSession()
       .then((sess) => {if (sess) {this.setState({sess})}})
-      .then(() => {console.log('GOT SESSION');this.setState({ready: true})})
+      .then(() => {
+        //   console.log('GOT SESSION');
+          this.setState({ready: true})})
       .catch((err) => {console.log('ERROR GETTING SESSION:', err);this.setState({ready: true})})
     }
 
     render() {
     const { component: Component, ...props } = this.props
     if (this.state.ready) {
-        console.log('sess:',this.state.sess)
+        // console.log('sess:',this.state.sess)
         return (
             <Route 
             {...props} 
