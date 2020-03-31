@@ -13,6 +13,7 @@ import { Notification } from "./Notifications"
 import NotificationPage from "./NotificationsPage"
 import Projects from "./Projects"
 // import Classroom from "./classroom/Classroom"
+import LobbyHolder from "../classroom/LobbyHolder"
 
 import { css, jsx } from "@emotion/core"
 import RepCounter from "./RepCounter"
@@ -36,7 +37,7 @@ const AppRoutes = (props) => {
                     faIcon: faEdit
                 },
             ]} />
-            <RepCounter />
+            {/* <RepCounter /> */}
             <div css={css`max-width: 80%; margin: auto;`}> {/*for sidebar responsiveness*/}
                 <Route path='/app' exact component={Home}/>
                 <Route path="/app/training" component={TrainingRoutes} />
@@ -46,6 +47,7 @@ const AppRoutes = (props) => {
                 <Route path="/app/opportunities" component={Opportunities} />
                 <Route path="/app/projects" component={Projects} />
                 <Route path="/app/notifications" component={NotificationPage} />
+                <Route path='/app/classroom' component={LobbyHolder} />
                 {/* <Route path="/app/classroom" component={Classroom} /> */}
             </div>
         </>

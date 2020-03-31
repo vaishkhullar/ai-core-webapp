@@ -19,21 +19,12 @@ import React, { Component } from "react"
 import { Auth } from "aws-amplify"
 import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
-// import Master from "./master"
-import Viewer from "./viewer"
-import { expand_in } from "mvp-webapp"
+import Master from "./SignalingChannelMaster"
+// import Viewer from "./viewer"
 
 const style = css`
     padding: 20px;
     background-color: var(--color2);
-    // height: 100%;
-    // video {
-    //     height: 100%;
-    //     max-height: 100%;
-    //     max-width: 100%;
-    // }
-    animation-name: ${expand_in};
-    animation-duration: 1s;
 `
 
 export const getRandomClientId = () => {
@@ -58,52 +49,52 @@ export class VideoOutput extends Component {
     }
 
     render() {
-        return <video ref={this.videoRef} autoPlay></video>;
+        return <video ref={this.videoRef} controls={false} muted={this.props.muted} autoPlay></video>;
     }
 }
 
 
 class Classroom extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            region: 'eu-west-2', 
-            channelName: 'test-channel',
-            clientId: 'random_id',
-            sendVideo: getRandomClientId(),
-            sendAudio: true,
-            openDataChannel: true,
-            widescreen: true,
-            fullscreen: true,
-            useTrickleICE: true,
-            natTraversalDisabled: true,
-            forceTURN: true,
-            accessKeyId: null,
-            endpoint: null,
-            secretAccessKey: null,
-            sessionToken: null,
-            ready: false,
-            localStream: null
-        }
-    }
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {
+    //         region: 'eu-west-2', 
+    //         channelName: 'test-channel',
+    //         clientId: 'random_id',
+    //         sendVideo: getRandomClientId(),
+    //         sendAudio: true,
+    //         openDataChannel: true,
+    //         widescreen: true,
+    //         fullscreen: true,
+    //         useTrickleICE: true,
+    //         natTraversalDisabled: true,
+    //         forceTURN: true,
+    //         accessKeyId: null,
+    //         endpoint: null,
+    //         secretAccessKey: null,
+    //         sessionToken: null,
+    //         ready: false,
+    //         localStream: null
+    //     }
+    // }
 
     componentDidMount = async () => {
-        const data = await Auth.currentCredentials()
-        const accessKeyId = data.accessKeyId
-        const secretAccessKey = data.secretAccessKey
-        const sessionToken = data.sessionToken
-        const channelARN = 'arn:aws:kinesisvideo:eu-west-2:251926666850:channel/test-channel/1584463852821'
+        // const data = await Auth.currentCredentials()
+        // const accessKeyId = data.accessKeyId
+        // const secretAccessKey = data.secretAccessKey
+        // const sessionToken = data.sessionToken
+        // const channelARN = 'arn:aws:kinesisvideo:eu-west-2:251926666850:channel/test-channel/1584463852821'
 
         // navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 
-        const localStream = await navigator.mediaDevices.getUserMedia({
-            // video: { width: { ideal: 1280 }, height: { ideal: 720 } },
-            video: { width: { ideal: 640}, height: { ideal: 360 } },
-            // audio: true,
-        });
-        this.setState({
-            localStream,
-        })
+        // const localStream = await navigator.mediaDevices.getUserMedia({
+        //     // video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+        //     video: { width: { ideal: 640}, height: { ideal: 360 } },
+        //     // audio: true,
+        // });
+        // this.setState({
+        //     localStream,
+        // })
 
         // this.setState({accessKeyId, secretAccessKey, sessionToken, ready: true, localStream})
     }
@@ -112,11 +103,10 @@ class Classroom extends Component {
         return (
             <div css={style}>
                 {/* {this.state.localStream ?<VideoOutput video={this.state.localStream} controls />:null} */}
-                {/* <Master /> */}
-                <Viewer 
+                <Master 
                     onStatsReport={(report)=>{console.log('stats report:', report)}}
                     onRemoteDataMessage={(msg)=>{console.log('remote data message:', msg)}} />
-                />
+                {/* <Viewer /> */}
             </div>
         )
         // (

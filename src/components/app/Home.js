@@ -50,6 +50,11 @@ class Home extends Component {
                         title: 'Projects',
                         faIcon: projectIcon
                     },
+                    {
+                        to: "app/classroom",
+                        title: 'Classroom',
+                        faIcon: classroomIcon
+                    },
                     // {
                     //     to: "app/classroom",
                     //     title: 'Classroom',
