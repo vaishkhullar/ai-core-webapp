@@ -61,7 +61,7 @@ const style = css`
 
     .comment {
         display: flex;
-        min-height: 50px;
+        // min-height: 50px;
         width: 98%;
         background-color: whitesmoke;
         margin-bottom: 10px;
@@ -293,10 +293,13 @@ class Comment extends Component {
             </div>
             <img onClick={()=>{this.setState({replying: true})}} src={reply} className="reply-btn"/>
         </div>
-        {/* <div className="replies">
+        <div className="replies">
             {
-                this.props.replies.map((r)=>{return(
-                    <div className="reply">{r.content ? r.content : r}</div> // ternary operator is for backward compatability: originally r was just a string of the content, now it's a dict with a key "content"
+                this.props.replies.map((r)=>{
+                    console.log(r)
+                    console.log(r.content)
+                    return(
+                    <div className="reply">{r.content}</div>
                 )})
             }
         </div>
@@ -308,7 +311,7 @@ class Comment extends Component {
             </div>
             :
             null
-        } */}
+        }
         </>
     )}
 }
