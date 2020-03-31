@@ -120,7 +120,7 @@ const style = css`
         float: right;
         display: flex;
         justify-content: flex-end;
-        width: 98%;
+        width: 96%;
         margin-bottom: 10px;
         textarea {
             margin-right: 5px;
