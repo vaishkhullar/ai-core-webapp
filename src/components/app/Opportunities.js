@@ -56,11 +56,6 @@ const style = css`
 `
 
 const Opportunity = (props) => {
-<<<<<<< HEAD
-=======
-    console.log(props.logo)
-    //console.log(Object.keys(logos))
->>>>>>> 2e449cc1987750dc07b966ade91d359626b25b93
     return (
     <div className='opportunity'>
         <div className="heading">
