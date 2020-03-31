@@ -15,8 +15,8 @@ const style = css`
     }
 
     .forum {
-        width: 600px;
-        max-width: 60%;
+        width: 100%;
+        height: 243px;
     }
 
     .stream {

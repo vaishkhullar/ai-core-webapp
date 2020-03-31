@@ -9,12 +9,13 @@ import { makeid } from "../../utils"
 import { Auth } from "aws-amplify"
 
 const style = css`
-    width: 100%;
+    width: 85%;
     height: 100%;
-    max-height: 200px;
+    // max-height: 200px;
     // overflow: scroll;
     font-size: 14px;
     padding: 10px;
+    box-sizing: border-box;
 
     .make-post {
         button {
@@ -44,6 +45,7 @@ const style = css`
         flex-direction: column;
         overflow-y: scroll;
         margin-top: 5px;
+        height: 74%;
 
         ::-webkit-scrollbar {
             width: 6px;
