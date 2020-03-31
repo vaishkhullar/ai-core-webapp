@@ -5,8 +5,6 @@ import { importAll } from "../../utils"
 import { css, jsx } from "@emotion/core"
 import { Button, Loading } from "mvp-webapp"
 
-const logos = importAll(require.context('../../images/opportunities'))
-
 const style = css`
     display: flex;
     flex-direction: column;
@@ -59,7 +57,7 @@ const style = css`
 
 const Opportunity = (props) => {
     console.log(props.logo)
-    console.log(Object.keys(logos))
+    //console.log(Object.keys(logos))
     return (
     <div className='opportunity'>
         <div className="heading">
@@ -67,7 +65,7 @@ const Opportunity = (props) => {
                 <div className="title">
                     {props.roleTitle} at {props.company}
                 </div>
-                <img className='logo' src={logos[props.logo]} />
+                <img className='logo' src={props.logo} />
             </div>
         </div>
         <div className='body'>
