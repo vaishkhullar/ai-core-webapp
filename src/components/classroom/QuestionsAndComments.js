@@ -14,6 +14,8 @@ const style = css`
     max-height: 200px;
     // overflow: scroll;
     font-size: 14px;
+    padding: 10px;
+
     .make-post {
         button {
             margin: 0 5px;
