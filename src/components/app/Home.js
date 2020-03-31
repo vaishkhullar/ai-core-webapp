@@ -51,7 +51,7 @@ class Home extends Component {
                         faIcon: projectIcon
                     },
                     {
-                        to: "app/classroom",
+                        to: "/classroom",
                         title: 'Classroom',
                         faIcon: classroomIcon
                     },

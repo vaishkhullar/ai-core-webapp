@@ -24,6 +24,8 @@ import Partnerships from "./components/landing/Partnerships";
 import About from "./components/landing/About";
 import OpenHacking from "./components/landing/OpenHacking";
 import PrivacyPolicy from "./components/landing/PrivacyPolicy";
+import Classroom from "./components/classroom/Classroom"
+
 export const history = createHistory()
 history.listen((location, action) => {
     window.scrollTo(0, 0)
@@ -225,6 +227,7 @@ class _Routes extends Component {
             <Route path="/about" component={About} />
             <Route path="/openhacking" component={OpenHacking} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
+            <Route path="/classroom" component={Classroom} />
             <Route path="/" component={LandingIndex} />
 
             <Route component={NotFound} path=""/> 

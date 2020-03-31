@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Route, Redirect } from "react-router-dom"
 import { Navbar, Sidebar } from "mvp-webapp"
 import { connect } from "react-redux"
-import Student from "../app/classroom/Student"
+import Student from "./Student"
 import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
 import logo from "../../images/logo.png"
@@ -14,12 +14,15 @@ const AppRoutes = (props) => {
         <>
             {/* <AskForDetails /> */}
             <Navbar show_root_link={false} 
-            btn='100 REP' 
-            action={props.openMenu} 
-            back={'/app'} 
-            root='/app' roots={['/app']} btn_icon={logo}/>
+                btn='100 REP'
+                action={props.openMenu} 
+                back={'/app'}
+                root='/app' roots={['/app']} 
+                btn_icon={logo}
+                show_root_link={false}
+            />
             <div css={css`width: 80%; margin: auto;`}> {/*for sidebar responsiveness*/}
-                <Route path='/app/classroom' component={LobbyHolder} />
+                <Route path='/classroom' component={LobbyHolder} />
                 {/* <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
                 <Route path="/classroom/mem2" render={()=>{return <Student mem={2} />}} />
                 <Route path="/classroom/mem3" render={()=>{return <Student mem={3} />}} />

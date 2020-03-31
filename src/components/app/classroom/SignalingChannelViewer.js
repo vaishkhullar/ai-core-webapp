@@ -4,7 +4,7 @@ import { SignalingClient, Role } from "amazon-kinesis-video-streams-webrtc"
 import { Auth } from "aws-amplify"
 import { getRandomClientId, VideoOutput } from "./Classroom"
 
-import { makePostRequest } from "./Student"
+import { makePostRequest } from "../../classroom/Student"
 
 export default class Viewer {
     constructor(channelName, setStreams, onRemoteDataMessage, onStatsReport) {
