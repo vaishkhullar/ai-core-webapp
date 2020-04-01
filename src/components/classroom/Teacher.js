@@ -512,6 +512,10 @@ const style = css`
                                     return(
                                         this.state.remoteStreams[member_channel] ?
                                         <div className="stream">
+                                            <div>
+                                                {member_id}
+                                                {member_channel}
+                                            </div>
                                             <VideoOutput video={this.state.remoteStreams[member_channel][0]} />
                                             {/* {this.state.remoteStreams[channelName].map(stream => {
                                                 console.log(stream)
