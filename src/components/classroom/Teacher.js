@@ -38,62 +38,62 @@ class Teacher extends Component {
         }
     }
 
-    sync = async ()=>{ // keep everyone in the group in sync by ensuring that we are viewing all those who are viewing us
-        if (this.state.currentLobby) {
-            console.log('\nsyncing')
-            var response = await makePostRequest('lobby', {
-                type: 'sync',
-                lobby_id: this.state.currentLobby.lobby_id,
-                lobby_state: this.state.lobby_state,
-                // user_id: `user-id-${this.props.mem}`,
-                user_id: this.state.user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `user-id-${this.props.mem}` : this.state.user_id,
-                // channels: {screen: this.state.channelName},
-                // epoch: this.state.last_updated
-            })  
-            console.log('SYNC RESPONSE:', response)
-            this.setState({currentLobby: response},
-                ()=>{
-                    // CREATE NEW VIEWERS
-                    Object.keys(this.state.currentLobby.members).forEach(member_id=>{  // make sure all members of the lobby are being viewed
-                        Object.values(this.state.currentLobby.members[member_id]).forEach( // for each of their channels (webcam and screen)
-                            channel=>{
-                                if (!Object.keys(this.state.viewers).includes(channel)) { // as long as this isnt me
-                                    this.setViewer(channel) // start viewing the channel
-                                }
-                            }
-                        )
-                    })
-                    // REMOVE STALE VIEWERS
-                    var channels_in_synced_lobby_state = Object.values(this.state.currentLobby.members).map(channels=>Object.values(channels)).flat() // channels which should be here
-                    Object.keys(this.state.viewers).forEach(channel_id=>{ // check to see if each of the current viewers are in this list
-                        console.log(channel_id)
-                        if (!channels_in_synced_lobby_state.includes(channel_id)) { // if the channel is not in the list of those which should be being viewed, as indicated by the sync
-                            this.state.viewers[channel_id].stopViewer() // stop the channle
-                            delete this.state.viewers[channel_id] // and delete it
-                            console.log('deleting', channel_id)
-                        }
-                        // .forEach(channels=>{
-                        //     console.log(channels)
-                        //     Object.values(channels).map(channel)
-                        // })
-                    })
-                }
-            )
+    // sync = async ()=>{ // keep everyone in the group in sync by ensuring that we are viewing all those who are viewing us
+    //     if (this.state.currentLobby) {
+    //         console.log('\nsyncing')
+    //         var response = await makePostRequest('lobby', {
+    //             type: 'sync',
+    //             lobby_id: this.state.currentLobby.lobby_id,
+    //             lobby_state: this.state.lobby_state,
+    //             // user_id: `user-id-${this.props.mem}`,
+    //             user_id: this.state.user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `user-id-${this.props.mem}` : this.state.user_id,
+    //             // channels: {screen: this.state.channelName},
+    //             // epoch: this.state.last_updated
+    //         })  
+    //         console.log('SYNC RESPONSE:', response)
+    //         this.setState({currentLobby: response},
+    //             ()=>{
+    //                 // CREATE NEW VIEWERS
+    //                 Object.keys(this.state.currentLobby.members).forEach(member_id=>{  // make sure all members of the lobby are being viewed
+    //                     Object.values(this.state.currentLobby.members[member_id]).forEach( // for each of their channels (webcam and screen)
+    //                         channel=>{
+    //                             if (!Object.keys(this.state.viewers).includes(channel)) { // as long as this isnt me
+    //                                 this.setViewer(channel) // start viewing the channel
+    //                             }
+    //                         }
+    //                     )
+    //                 })
+    //                 // REMOVE STALE VIEWERS
+    //                 var channels_in_synced_lobby_state = Object.values(this.state.currentLobby.members).map(channels=>Object.values(channels)).flat() // channels which should be here
+    //                 Object.keys(this.state.viewers).forEach(channel_id=>{ // check to see if each of the current viewers are in this list
+    //                     console.log(channel_id)
+    //                     if (!channels_in_synced_lobby_state.includes(channel_id)) { // if the channel is not in the list of those which should be being viewed, as indicated by the sync
+    //                         this.state.viewers[channel_id].stopViewer() // stop the channle
+    //                         delete this.state.viewers[channel_id] // and delete it
+    //                         console.log('deleting', channel_id)
+    //                     }
+    //                     // .forEach(channels=>{
+    //                     //     console.log(channels)
+    //                     //     Object.values(channels).map(channel)
+    //                     // })
+    //                 })
+    //             }
+    //         )
             
-        }
-    }
+    //     }
+    // }
 
     componentDidMount = async () => {
 
         var creds = await Auth.currentAuthenticatedUser()
         var user_id = creds.username
 
-        var response = await makeGetRequest('channel')
-        var channelName = await response.json()
+        // var response = await makeGetRequest('channel')
+        // var channelName = await response.json()
 
         this.setState({
             user_id,
-            channelName
+            // channelName
         }, ()=>{
             this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
             this.websocket.onmessage = this.handleMessage
@@ -102,9 +102,7 @@ class Teacher extends Component {
                 if (this.websocket.readyState == 1) {
                     clearInterval(this.interval)
                     this.interval = null
-                    this.startStreaming()
-                    this.joinTeacherLobby()
-                    this.getAllLobbies()
+                    this.getSignalingChannel()
                 }
             }, 1000)
         })
@@ -112,6 +110,22 @@ class Teacher extends Component {
 
 
         // var response = await makeGetRequest('all-lobbies')
+    }
+
+    getSignalingChannel = async () => {
+        this.websocket.send(JSON.stringify({
+            action: 'get-signaling-channel',
+            user_id: this.state.user_id
+        }))
+    }
+
+    setSignalingChannel = async (channels) => {
+        this.setState({...channels}, ()=>{
+            console.log(this.state)
+            this.startStreaming()
+            this.joinTeacherLobby()
+            this.getAllLobbies()
+        })
     }
 
     startStreaming = async () => {
