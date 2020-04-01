@@ -45,7 +45,8 @@ class Teacher extends Component {
                 type: 'sync',
                 lobby_id: this.state.currentLobby.lobby_id,
                 lobby_state: this.state.lobby_state,
-                user_id: `user-id-${this.props.mem}`,
+                // user_id: `user-id-${this.props.mem}`,
+                user_id: this.state.user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `user-id-${this.props.mem}` : this.state.user_id,
                 // channels: {screen: this.state.channelName},
                 // epoch: this.state.last_updated
             })  
@@ -70,7 +71,6 @@ class Teacher extends Component {
                             this.state.viewers[channel_id].stopViewer() // stop the channle
                             delete this.state.viewers[channel_id] // and delete it
                             console.log('deleting', channel_id)
-                            // alert()
                         }
                         // .forEach(channels=>{
                         //     console.log(channels)
@@ -186,7 +186,6 @@ class Teacher extends Component {
     joinLobby = (lobby) => {
         // spin up all viewers for lobby
         console.log(lobby)
-        // alert('joining lobby')
         for (var channels of Object.values(lobby.members).flat()) {
             console.log(channels)
             Object.values(channels).forEach(channel=>{
@@ -245,7 +244,6 @@ class Teacher extends Component {
     }
 
     leaveLobby = () => {
-        // alert('leaving lobby')
         this.websocket.send(JSON.stringify({
             action: 'leave-lobby',
             user_id: this.state.user_id,
