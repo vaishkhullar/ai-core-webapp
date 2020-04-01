@@ -29,6 +29,7 @@ const AppRoutes = (props) => {
                 <Route path="/classroom/mem3" render={()=>{return <Student mem={3} />}} />
                 <Route path="/classroom/mem4" render={()=>{return <Student mem={4} />}} />
                 <Route path="/classroom/mem5" render={()=>{return <Student mem={5} />}} />
+                <Route path="/classroom/teacher" component={Teacher} />
                 <Route path='/classroom' exact render={()=>{
                     return<TileGrid tiles={[
                         {
