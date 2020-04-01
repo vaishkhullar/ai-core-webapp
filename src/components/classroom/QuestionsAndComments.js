@@ -153,7 +153,7 @@ export default class Questions extends Component {
     getLatestComments = () =>{
         makeGetRequest('app/user/comments?id=' + this.props.id,
             (comments) => {
-                console.log('got comments:', comments)
+                // console.log('got comments:', comments)
                 this.setState({comments})
             }
         )
@@ -174,7 +174,7 @@ export default class Questions extends Component {
             }
         }
         makePostRequest('app/user/comments?id=' + this.props.id, post, ()=>{
-            console.log('posted comment')
+            // console.log('posted comment')
         })
         this.setState({post: '', comments: {...this.state.comments, ...post}},
             () => {console.log('post:', this.state.post)}
@@ -202,7 +202,7 @@ export default class Questions extends Component {
     }
 
     reply = (reply, id) => {
-        console.log(this.state.comments)
+        // console.log(this.state.comments)
         var comment = this.state.comments[id]
         reply = {
             user_id: this.state.user_id,
@@ -210,7 +210,7 @@ export default class Questions extends Component {
             epoch: new Date()
         }
         comment.replies.push(reply)
-        console.log(comment)
+        // console.log(comment)
         var update = {[id]: comment}
         this.setState({comments: {...this.state.comments, ...update}})
         makePostRequest('app/user/comments?id=' + this.props.id, update, ()=>{console.log('updated')})
@@ -224,7 +224,7 @@ export default class Questions extends Component {
         var comments = this.state.comments
         var comment_ids = Object.keys(comments)
         .sort((a, b)=>{      // sort by number of upvotes
-            console.log(a.votes)
+            // console.log(a.votes)
             a = comments[a]
             b = comments[b]
             var a_votes = a.votes.filter((v) => {return v.upvote}).length - a.votes.filter((v) => {return !v.upvote}).length
@@ -300,8 +300,8 @@ class Comment extends Component {
         <div className="replies">
             {
                 this.props.replies.map((r)=>{
-                    console.log(r)
-                    console.log(r.content)
+                    // console.log(r)
+                    // console.log(r.content)
                     return(
                     <div className="reply">{r.content}</div>
                 )})

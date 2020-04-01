@@ -120,9 +120,11 @@ class Teacher extends Component {
     }
 
     setSignalingChannel = async (channels) => {
+        console.log(channels)
         this.setState({...channels}, ()=>{
             console.log(this.state)
-            this.startStreaming()
+            console.log()
+            this.startStreaming() 
             this.joinTeacherLobby()
             this.getAllLobbies()
         })
@@ -145,14 +147,16 @@ class Teacher extends Component {
             master: new Master(
                 localStream,
                 null,
-                this.state.channelName,
+                this.state.signaling_channel,
                 (message)=>{console.log('REMOTE MESSAGE FROM MASTER:', message)},
                 // (e)=>{console.log('[MASTER] remote data message:', e)},
                 (e)=>{console.log('[MASTER] stats report:', e)},
             )},
+
+
             // this.requestJoinLobby
         )
-        setInterval(()=>{this.state.master.sendMasterMessage(JSON.stringify({type: 'group', content: Object.keys(this.state.viewers)}))}, 10000)
+        // setInterval(()=>{this.state.master.sendMasterMessage(JSON.stringify({type: 'group', content: Object.keys(this.state.viewers)}))}, 10000)
     } 
 
     getAllLobbies = () => {
@@ -167,7 +171,8 @@ class Teacher extends Component {
             action: 'join-as-teacher',
             user_id: this.state.user_id,
             channels: {
-                webcam: this.state.channelName
+                webcam: this.state.signaling_channel,
+                screen: this.state.screenshare_signaling_channel
             }
         }))
     }
@@ -190,10 +195,10 @@ class Teacher extends Component {
             action: 'join-lobby',
             lobby_id,
             user_id: this.state.user_id,
-            channels: {
-                webcam: this.state.channelName,
-                // screen: this.state.screenshareChannelName
-            }
+            // channels: {
+            //     webcam: this.state.channelName,
+            //     // screen: this.state.screenshareChannelName
+            // }
         }))
     }
 
@@ -271,13 +276,16 @@ class Teacher extends Component {
         var body = JSON.parse(message.data)
         console.log(body)
         switch (body.type) {
+            case 'get-signaling-channel':
+                console.log(body.content)
+                this.setSignalingChannel(body.content)
+                return
             case "list-lobbies":
                 this.setState({lobbies: body.content}, ()=>{console.log(this.state.lobbies)})
                 return
-            case "teacher-lobby":
+            case "join-teacher-lobby":
                 this.setState({
                     teacher_lobby: body.content,
-                    currentLobby: body.content
                 }, ()=>{
                     console.log(this.state.teacher_lobby)
                     this.joinLobby(body.content)
@@ -289,13 +297,13 @@ class Teacher extends Component {
                 this.leaveLobby()
                 this.joinLobby(lobby)
                 return
-
             case "member-left-lobby":
                 return
             case "member-joined-lobby":
                 return
             default:
-                console.error('message type not recognised')
+                console.error('message type not recognised:')
+                // console.error(body)
         }
     }
 
