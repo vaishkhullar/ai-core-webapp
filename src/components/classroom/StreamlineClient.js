@@ -2,13 +2,13 @@ import Viewer from "./SignalingChannelViewer"
 import Master from "./SignalingChannelMaster"
 
 class Client {
-    constructor(user_id, setStreams) {
+    constructor(user_id, setStreams, onReady) {
         this.setStreams = setStreams
         this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
         this.websocket.onmessage = this.handleMessage
         this.viewers = {}
         this.user_id = user_id
-
+        this.ready = false
         this.interval = setInterval(()=>{
             if (this.websocket.readyState == 1) {
                 clearInterval(this.interval)
@@ -19,6 +19,7 @@ class Client {
     }
 
     getSignalingChannel = async () => {
+        console.log(this.user_id)
         this.websocket.send(JSON.stringify({
             action: 'get-signaling-channel',
             user_id: this.user_id
@@ -27,7 +28,7 @@ class Client {
 
     setSignalingChannel = async (channels) => {
         this.signaling_channel = channels.signaling_channel
-        this.startStreaming() 
+        this.ready = true
     }
 
     requestJoinLobby = (lobby_id) => {
@@ -36,6 +37,7 @@ class Client {
             lobby_id,
             user_id: this.user_id,
         }))
+        alert('requesting lobby')
     }
 
     joinLobby = (lobby) => {
@@ -46,6 +48,7 @@ class Client {
                 this.joinChannel(channel)
             })
         }
+        alert('joined lobby')
     }
 
     joinChannel = async (channel) => {
@@ -123,7 +126,7 @@ class Client {
             case "join-lobby":
                 let lobby = body.content
                 // this.master.stopMaster()
-                this.leaveLobby()
+                if (this.currentLobby) {this.leaveLobby()}
                 this.joinLobby(lobby)
                 return
             case "member-left-lobby":
