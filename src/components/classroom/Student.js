@@ -7,15 +7,14 @@ import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
 import { Button, IconButtons, expand_in } from "mvp-webapp"
 import { faDesktop as screenshareIcon, faHandPaper as questionIcon} from '@fortawesome/free-solid-svg-icons';
-import Viewer from "../app/classroom/SignalingChannelViewer"
-import Master from "../app/classroom/SignalingChannelMaster"
+import Viewer from "./SignalingChannelViewer"
+import Master from "./SignalingChannelMaster"
 import LobbySwitch from "./LobbySwitch"
 import sound from "./sounds/time-is-now.mp3"
 // import sound from "../../classroom/sounds/me-too.mp3"
 import { connect } from "react-redux"
 
 const widescreen = false
-const resolution = widescreen ? { width: { ideal: 1280 }, height: { ideal: 720 } } : { width: { ideal: 640/2 }, height: { ideal: 480/2 } };
 const webcamOptions = {
         video: {
             width: { ideal : 320 },

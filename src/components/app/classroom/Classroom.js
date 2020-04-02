@@ -19,7 +19,7 @@ import React, { Component } from "react"
 import { Auth } from "aws-amplify"
 import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
-import Master from "./SignalingChannelMaster"
+import Master from "../../classroom/SignalingChannelMaster"
 // import Viewer from "./viewer"
 
 const style = css`
@@ -32,6 +32,10 @@ export const getRandomClientId = () => {
         .toString(36)
         .substring(2)
         .toUpperCase();
+}
+
+const epochNow = () => {
+    return Math.round(new Date().getTime() / 1000)
 }
 
 

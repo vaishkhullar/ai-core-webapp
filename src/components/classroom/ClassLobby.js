@@ -1,7 +1,5 @@
 import React, { Component } from "react"
 import { css, jsx } from "@emotion/core"
-import Student from "./Student"
-import LobbySwitch from "./LobbySwitch"
 /** @jsx jsx */
 import Forum from "./QuestionsAndComments"
 import { connect } from "react-redux"

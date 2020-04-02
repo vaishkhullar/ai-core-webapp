@@ -13,7 +13,6 @@ export default class Instructor extends Component {
             // dataChannelByClientId: {},
             localStream: null,
         }
-
     }
 
     componentDidMount = async () => {

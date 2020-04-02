@@ -1,18 +1,12 @@
+import Viewer from "./SignalingChannelViewer"
+import Master from "./SignalingChannelMaster"
+
 class Client {
     constructor(user_id, setStreams) {
         this.setStreams = setStreams
         this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
         this.websocket.onmessage = this.handleMessage
-        // this.state = {
-        //     channelName: null,
-        //     screenshareChannelName: null,
-        //     user_id: null,
-        //     lobbies: [],
-        //     localStream: null,
-        //     currentLobby: null,
-        //     remoteStreams: {},
-        //     viewers: {}
-        // }
+        this.viewers = {}
         this.user_id = user_id
 
         this.interval = setInterval(()=>{
@@ -27,35 +21,20 @@ class Client {
     getSignalingChannel = async () => {
         this.websocket.send(JSON.stringify({
             action: 'get-signaling-channel',
-            user_id: this.state.user_id
+            user_id: this.user_id
         }))
     }
 
     setSignalingChannel = async (channels) => {
         this.signaling_channel = channels.signaling_channel
-            this.startStreaming() 
-    }
-
-    startStreaming = async () => {
-        let webcam
-        if (navigator.mediaDevices.getUserMedia) {
-            webcam = await navigator.mediaDevices.getUserMedia(webcamOptions);
-        } 
-        this.webcam = webcam
-        this.master = new Master(
-            webcam,
-            null,
-            this.signaling_channel,
-            (message)=>{console.log('REMOTE MESSAGE FROM CLIENT MASTER:', message)},
-            (e)=>{console.log('[MASTER] stats report:', e)},
-        )
+        this.startStreaming() 
     }
 
     requestJoinLobby = (lobby_id) => {
         this.websocket.send(JSON.stringify({
             action: 'join-lobby',
             lobby_id,
-            user_id: this.state.user_id,
+            user_id: this.user_id,
         }))
     }
 
@@ -84,7 +63,7 @@ class Client {
             this.viewers[channel].stopViewer() // stop the viewer before overwriting it
         }
         this.viewers = {
-            ...this.state.viewers,
+            ...this.viewers,
             [channel]: new Viewer(  // create new viewer
                 channel,
                 (newStreams) => {this.setStreams(newStreams, channel)},
@@ -97,11 +76,41 @@ class Client {
     leaveLobby = () => {
         this.websocket.send(JSON.stringify({
             action: 'leave-lobby',
-            user_id: this.state.user_id,
-            lobby_id: this.state.currentLobby.lobby_id
+            user_id: this.user_id,
+            lobby_id: this.currentLobby.lobby_id
         }))
-        // this.state.master.stopMaster() // stop streaming from here
+        // this.master.stopMaster() // stop streaming from here
         Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
+    }
+
+    startWebcam = (webcam) => {
+        this.master = new Master(
+            webcam,
+            null,
+            this.signaling_channel,
+            (message)=>{console.log('REMOTE MESSAGE FROM CLIENT MASTER:', message)},
+            (e)=>{console.log('[MASTER] stats report:', e)},
+        )
+    }
+
+    stopWebcam = () => {
+        this.screenshareMaster.stopMaster()
+        this.screenshareMaster = null
+    }
+
+    startScreenshare = async (stream) => {
+        this.screenshareMaster = new Master(
+            stream,
+            null,
+            this.screenshare_signaling_channel,
+            (message)=>{console.log('REMOTE MESSAGE FROM CLIENT MASTER:', message)},
+            (e)=>{console.log('[MASTER] stats report:', e)},
+        )
+    }
+
+    stopScreenshare = () => {
+        this.screenshareMaster.stopMaster()
+        this.screenshareMaster = null
     }
 
     handleMessage = (message) =>{
@@ -113,7 +122,7 @@ class Client {
                 return
             case "join-lobby":
                 let lobby = body.content
-                // this.state.master.stopMaster()
+                // this.master.stopMaster()
                 this.leaveLobby()
                 this.joinLobby(lobby)
                 return
@@ -123,8 +132,13 @@ class Client {
                 return
             default:
                 console.error('message type not recognised:')
-                // console.error(body)
+                console.error(body)
         }
+    }
+
+    close = () => {
+        this.master.stopMaster() // stop master
+        Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
     }
 }
 

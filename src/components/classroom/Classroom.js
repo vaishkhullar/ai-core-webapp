@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Route, Redirect } from "react-router-dom"
 import { Navbar, Sidebar, TileGrid } from "mvp-webapp"
 import { connect } from "react-redux"
-import Student from "./Student"
+import Student from "./NewStudent"
 import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
 import logo from "../../images/logo.png"
