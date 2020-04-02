@@ -9,7 +9,7 @@ import { makeid } from "../../utils"
 import { Auth } from "aws-amplify"
 
 const style = css`
-    // width: 85%;
+    width: 85%;
     height: 100%;
     // max-height: 200px;
     // overflow: scroll;
@@ -41,11 +41,11 @@ const style = css`
     }
 
     .comments {
-        max-height: 200px;
+        // max-height: 200px;
         flex-direction: column;
         overflow-y: scroll;
         margin-top: 5px;
-        height: 74%;
+        height: 255px;
 
         ::-webkit-scrollbar {
             width: 6px;

@@ -6,7 +6,7 @@ import ClassLobby from "./ClassLobby"
 /** @jsx jsx */
 
 const style = css`
-    height: 80vh;
+    height: 90vh;
     color: black;
     font-family: var(--font1);
     background-color: var(--color2);
@@ -29,7 +29,7 @@ const style = css`
 
 const lobbies = [
     <ClassLobby />,
-    // <Student mem={6} />,
+    <Student mem={6} />,
     <ClassLobby />
 ]
 
@@ -65,9 +65,9 @@ class LobbyHolder extends Component {
                 }
 
                 )}
-                {/* <div className="switch">
+                <div className="switch">
                     <LobbySwitch lobby={this.state.lobbyName} setLobby={this.setLobby}/>
-                </div> */}
+                </div>
             </div>
         )
     }

@@ -15,7 +15,7 @@ const style = css`
 
     .forum {
         width: 100%;
-        height: 243px;
+        height: 332px;
     }
 
     .stream {
