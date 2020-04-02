@@ -117,6 +117,7 @@ class Client {
     }
 
     handleMessage = (message) =>{
+        console.log('messsage:', message)
         var body = JSON.parse(message.data)
         console.log(body)
         switch (body.type) {
@@ -130,8 +131,20 @@ class Client {
                 this.joinLobby(lobby)
                 return
             case "member-left-lobby":
+                console.log(body.content)
+                alert('member left lobby')
                 return
             case "member-joined-lobby":
+                var new_member = body.content
+                console.log(body)
+                alert('a new member joined')
+                this.currentLobby.members = {
+                    ...this.currentLobby.members,
+                    ...new_member
+                }
+                Object.values(new_member).forEach(channel=>{
+                    this.joinChannel(channel)
+                })
                 return
             default:
                 console.error('message type not recognised:')
