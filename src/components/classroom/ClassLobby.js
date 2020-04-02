@@ -31,7 +31,7 @@ class ClassLobby extends Component {
     render() {
         return (<div css={style}>
             Class lobby
-            {this.props.user_id}
+            {/* {this.props.user_id} */}
             {/* <video/> */}
             {/* <iframe 
                 src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2FTHEAICORE%2Fvideos%2F521052065500584%2F&width=0" 
@@ -53,7 +53,7 @@ class ClassLobby extends Component {
                     volume='0'
                 />
                 <div className="forum">
-                    <Forum id='first-online-class' />
+                    <Forum id='policy-gradients-02-04-2020' />
 
                 </div>
             {/* </div> */}
@@ -64,7 +64,7 @@ class ClassLobby extends Component {
 
 const mapStateToProps = (state) => {
     console.log(state.user)
-    alert()
+    // alert()
     return {
         user_id: state.user['user-id']
     }

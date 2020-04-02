@@ -9,6 +9,7 @@ import logo from "../../images/logo.png"
 import LobbyHolder from "./LobbyHolder"
 import Teacher from "./Teacher"
 import code from "../../images/code.png"
+import ClassLobby from "./ClassLobby"
 
 const AppRoutes = (props) => {
     return (
@@ -23,14 +24,15 @@ const AppRoutes = (props) => {
                 show_root_link={false}
             />
             <div css={css`width: 80%; margin: auto;`}> {/*for sidebar responsiveness*/}
-                {/* <Route path='/classroom' component={LobbyHolder} /> */}
-                <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
+                <Route path='/classroom' component={LobbyHolder} />
+                {/* <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
                 <Route path="/classroom/mem2" render={()=>{return <Student mem={2} />}} />
                 <Route path="/classroom/mem3" render={()=>{return <Student mem={3} />}} />
                 <Route path="/classroom/mem4" render={()=>{return <Student mem={4} />}} />
                 <Route path="/classroom/mem5" render={()=>{return <Student mem={5} />}} />
-                <Route path="/classroom/teacher" component={Teacher} />
-                <Route path='/classroom' exact render={()=>{
+
+                <Route path="/classroom/teacher" component={Teacher} /> */}
+                {/* <Route path='/classroom' exact render={()=>{
                     return<TileGrid tiles={[
                         {
                             onClick: ()=>{window.open("/classroom/mem1")},
@@ -69,7 +71,7 @@ const AppRoutes = (props) => {
                         },]}
                         />
 
-                    }}/>
+                    }}/> */}
 
                 {/* <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
                 <Route path="/classroom/mem2" render={()=>{return <Student mem={2} />}} />

@@ -2,13 +2,15 @@ import Viewer from "./SignalingChannelViewer"
 import Master from "./SignalingChannelMaster"
 
 class Client {
-    constructor(user_id, setStreams, onReady) {
+    constructor(user_id, setLobby, setStreams, onReady) {
+        this.setLobby = setLobby
         this.setStreams = setStreams
         this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
         this.websocket.onmessage = this.handleMessage
         this.viewers = {}
         this.user_id = user_id
         this.ready = false
+        this.streams = {}
         this.interval = setInterval(()=>{
             if (this.websocket.readyState == 1) {
                 clearInterval(this.interval)
@@ -16,6 +18,21 @@ class Client {
                 this.getSignalingChannel()
             }
         }, 1000)
+        this.refresh_viewers = setInterval(()=>{
+            Object.keys(this.viewers).forEach(channel=>{
+                if (!this.streams[channel]) { // if we not yet received streams from this channel
+                    this.setViewer(channel) // reset the viewer (SDP offer will now be made after master has been created)
+                }
+            })
+        }, 1000)
+    }
+
+    _setStreams = (newStreams, channel) => {
+        this.streams = {
+            ...this.streams,
+            [channel]: newStreams
+        }
+        this.setStreams(newStreams,channel)
     }
 
     getSignalingChannel = async () => {
@@ -37,7 +54,7 @@ class Client {
             lobby_id,
             user_id: this.user_id,
         }))
-        alert('requesting lobby')
+        // alert('requesting lobby')
     }
 
     joinLobby = (lobby) => {
@@ -48,7 +65,7 @@ class Client {
                 this.joinChannel(channel)
             })
         }
-        alert('joined lobby')
+        // alert('joined lobby')
     }
 
     joinChannel = async (channel) => {
@@ -69,7 +86,7 @@ class Client {
             ...this.viewers,
             [channel]: new Viewer(  // create new viewer
                 channel,
-                (newStreams) => {this.setStreams(newStreams, channel)},
+                (newStreams) => {this._setStreams(newStreams, channel)},
                 (e)=>{console.log(`remote data message from viewer ${channel}:`, e)},
                 (e)=>{console.log(`stats report from viewer ${channel}:`, e)},
             )
@@ -84,6 +101,8 @@ class Client {
         }))
         // this.master.stopMaster() // stop streaming from here
         Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
+        this.currentLobby = {}
+        this.setLobby(this.currentLobby)
     }
 
     startWebcam = (webcam) => {
@@ -129,6 +148,7 @@ class Client {
                 // this.master.stopMaster()
                 if (this.currentLobby) {this.leaveLobby()}
                 this.joinLobby(lobby)
+                this.setLobby(lobby)
                 return
             case "member-left-lobby":
                 var connection_id = body.content
@@ -142,14 +162,15 @@ class Client {
                     console.log('removing channel:', channel)
                     this.viewers[channel].stopViewer()
                     delete this.viewers[channel]
-                    this.setStreams(null, channel)
+                    this._setStreams(null, channel)
                     console.log(this.viewers)
                     console.log()
                 })
                 delete this.currentLobby.members[connection_id]
                 console.log(this.currentLobby)
+                this.setLobby(this.currentLobby)
                 console.log(this.viewers)
-                alert('member left lobby')
+                // alert('member left lobby')
                 return
             case "member-joined-lobby":
                 var new_member = body.content
@@ -159,6 +180,7 @@ class Client {
                     ...this.currentLobby.members,
                     ...new_member
                 }
+                this.setLobby(this.currentLobby)
                 var channels = [
                     new_member[connection_id].signaling_channel, 
                     new_member[connection_id].screenshare_signaling_channel
@@ -166,10 +188,10 @@ class Client {
                 .filter(c=>{return c})
                 console.log(channels)
                 channels.forEach(channel=>{
-                    alert(`joining channel: ${channel}`)
+                    // alert(`joining channel: ${channel}`)
                     this.joinChannel(channel)
                 })
-                alert()
+                // alert()
                 return
             default:
                 console.error('message type not recognised:')

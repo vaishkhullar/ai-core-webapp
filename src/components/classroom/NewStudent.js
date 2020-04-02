@@ -75,8 +75,10 @@ class Student extends Component {
         var creds = await Auth.currentAuthenticatedUser()
         var user_id = creds.username
         user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-${this.props.mem}` : user_id
+        this.setState({user_id})
         this.streamlineClient = new StreamlineClient(
             user_id,
+            this.setLobby,
             this.setStreams,
             // this.streamlineClient.requestJoinLobby
         )
@@ -85,6 +87,10 @@ class Student extends Component {
             this.toggleWebcam()
             clearInterval(this.wait)
         }}, 500)
+    }
+
+    setLobby = (lobby) => {
+        this.setState({lobby})
     }
 
     setStreams = (newStreams, channel) => {
@@ -269,7 +275,6 @@ class Student extends Component {
                 }
             }
         `
-
         return (
             <>
             <div css={style}>
@@ -303,8 +308,49 @@ class Student extends Component {
                         <div>There's nobody in this lobby yet</div> : 
                         <div># remote streams: {Object.values(this.state.remoteStreams).length}</div>
                     }
+                    {JSON.stringify(this.state.lobby)}
                     {
-                    Object.keys(this.state.remoteStreams).map(channel => {
+                    this.state.lobby?
+                    Object.keys(this.state.lobby.members).map(conn_id=>{
+                        console.log(conn_id)
+                        console.log(this.state.lobby)
+                        console.log(this.state.lobby.members[conn_id])
+                        console.log(this.state.lobby.members[conn_id].signaling_channel)
+                        console.log(this.state.lobby.members[conn_id].screenshare_signaling_channel)
+                        var webcam_channel = this.state.lobby.members[conn_id].signaling_channel
+                        var screenshare_channel = this.state.lobby.members[conn_id].screenshare_signaling_channel
+                        var webcam = this.state.remoteStreams[webcam_channel]
+                        console.log(this.state.user_id)
+                        console.log(this.state.lobby.members[conn_id].user_id)
+                        if (this.state.user_id == this.state.lobby.members[conn_id].user_id) {return null} // dont render yourself
+                        return <div className="other">
+                            <div className="title">
+                                Connection id: {conn_id}
+                            </div>
+                            <div className="streams">
+                                {webcam?
+                                    <div>
+                                        <VideoOutput video={
+                                            webcam[0]
+                                        } />
+                                    </div>
+                                    :
+                                    null
+                                }
+                                {/* <div>
+                                    <VideoOutput video={
+                                        this.state.remoteStreams[
+                                            this.state.lobby.members[conn_id].screenshare_signaling_channel
+                                        ][0]
+                                    } />
+                                </div> */}
+                            </div>
+                        </div>
+                    })
+                    :
+                    null
+                    }
+                    {/* {Object.keys(this.state.remoteStreams).map(channel => {
                         return <div className="other">
                             <div className="title">
                                 Channel: {channel}
@@ -312,53 +358,10 @@ class Student extends Component {
                             <div className="streams">
                                 <div>
                                     {this.state.remoteStreams[channel] ? <VideoOutput video={this.state.remoteStreams[channel][0]} /> : 'no streams'}
-                                    {/* {this.state.remoteStreams[channel].map(stream =>{
-                                        return <VideoOutput video={stream} />
-                                    })} */}
                                 </div>
                             </div>
                         </div>
-                    })
-                    // this.state.lobby_state ?
-                    // Object.keys(this.state.lobby_state.members)
-                    // .filter(member_id=>{return member_id != this.state.user_id}) // dont show yourself
-                    // .map(member_id=>{
-                    //     if (
-                    //         Object.values(this.state.lobby_state.members[member_id])
-                    //         .filter(channel=>{return this.state.remoteStreams[channel]})
-                    //         .length == 0
-                    //     ) 
-                    //     {return null}
-                    //     return (
-                    //         <div className="other">
-                    //             <div className="title">
-                    //                 {member_id}
-                    //             </div>
-                    //             <div className="streams">
-                    //                 {/* {this.state.remoteStreams[channelName].length == 0 ? // if we've got some video streams
-                    //                 null: */}
-                    //                 {
-                    //                 Object.values(this.state.lobby_state.members[member_id]).map(member_channel=>{
-                    //                     return(
-                    //                         this.state.remoteStreams[member_channel] ?
-                    //                         <div className="stream">
-                    //                             <VideoOutput video={this.state.remoteStreams[member_channel][0]} />
-                    //                             {/* {this.state.remoteStreams[channelName].map(stream => {
-                    //                                 console.log(stream)
-                    //                                 return <VideoOutput video={stream}/>
-                    //                             })} */}
-                    //                         </div>
-                    //                         :
-                    //                         null
-                    //                     )})
-                    //                 }
-                    //             </div>
-                    //         </div>
-                    //     )
-                    // })
-                    // :
-                    // null
-                }
+                    })} */}
                 </div>
             </div>
             </>

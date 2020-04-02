@@ -9,7 +9,7 @@ import { makeid } from "../../utils"
 import { Auth } from "aws-amplify"
 
 const style = css`
-    width: 85%;
+    // width: 85%;
     height: 100%;
     // max-height: 200px;
     // overflow: scroll;
