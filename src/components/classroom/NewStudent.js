@@ -5,7 +5,7 @@ import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
 import { Button, IconButtons, expand_in } from "mvp-webapp"
 import sound from "./sounds/time-is-now.mp3"
-// import sound from "../../classroom/sounds/me-too.mp3"
+import exitsound from "./sounds/me-too.mp3"
 import { connect } from "react-redux"
 import StreamlineClient from "./StreamlineClient"
 
@@ -49,6 +49,7 @@ class Student extends Component {
     constructor(props) {
         super(props)
         this.onJoin = new Audio(sound)
+        this.onLeave = new Audio(exitsound)
         this.state = {
             // master: null,
             // signalingClient: null,
@@ -88,8 +89,16 @@ class Student extends Component {
 
     setStreams = (newStreams, channel) => {
         // console.log('setting streams ')
-        this.onJoin.play()
-        this.setState({remoteStreams: {...this.state.remoteStreams, [channel]: newStreams}})
+        if (newStreams) {
+            this.onJoin.play()
+            this.setState({remoteStreams: {...this.state.remoteStreams, [channel]: newStreams}})
+        }
+        else {
+            this.onLeave.play()
+            var remoteStreams = this.state.remoteStreams
+            delete remoteStreams[channel]
+            this.setState({remoteStreams})
+        }
     }
 
     componentWillUnmount = async () => {
@@ -292,10 +301,8 @@ class Student extends Component {
                 <div className="others">
                     {Object.keys(this.state.remoteStreams).length == 0 ? 
                         <div>There's nobody in this lobby yet</div> : 
-                        <div># remote streams: {this.state.remoteStreams.length}</div>
+                        <div># remote streams: {Object.values(this.state.remoteStreams).length}</div>
                     }
-                    {/* {Object.keys(this.state.remoteStreams).map(channelName=>{ */}
-
                     {
                     Object.keys(this.state.remoteStreams).map(channel => {
                         return <div className="other">

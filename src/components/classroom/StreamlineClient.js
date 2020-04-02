@@ -131,20 +131,44 @@ class Client {
                 this.joinLobby(lobby)
                 return
             case "member-left-lobby":
-                console.log(body.content)
+                var connection_id = body.content
+                console.log(connection_id)
+                console.log(this.currentLobby)
+                console.log(this.viewers)
+                var new_member = this.currentLobby.members[connection_id]
+                var channels = [new_member.signaling_channel, new_member.screenshare_signaling_channel].filter(c=>{return c})
+                console.log(channels)
+                channels.forEach(channel=>{
+                    console.log('removing channel:', channel)
+                    this.viewers[channel].stopViewer()
+                    delete this.viewers[channel]
+                    this.setStreams(null, channel)
+                    console.log(this.viewers)
+                    console.log()
+                })
+                delete this.currentLobby.members[connection_id]
+                console.log(this.currentLobby)
                 alert('member left lobby')
                 return
             case "member-joined-lobby":
                 var new_member = body.content
-                console.log(body)
-                alert('a new member joined')
+                console.log(new_member)
+                var connection_id = Object.keys(new_member)[0]
                 this.currentLobby.members = {
                     ...this.currentLobby.members,
                     ...new_member
                 }
-                Object.values(new_member).forEach(channel=>{
+                var channels = [
+                    new_member[connection_id].signaling_channel, 
+                    new_member[connection_id].screenshare_signaling_channel
+                ]
+                .filter(c=>{return c})
+                console.log(channels)
+                alert('setting')
+                channels.forEach(channel=>{
                     this.joinChannel(channel)
                 })
+                alert()
                 return
             default:
                 console.error('message type not recognised:')
