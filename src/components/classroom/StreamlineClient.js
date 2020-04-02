@@ -148,6 +148,7 @@ class Client {
                 })
                 delete this.currentLobby.members[connection_id]
                 console.log(this.currentLobby)
+                console.log(this.viewers)
                 alert('member left lobby')
                 return
             case "member-joined-lobby":
@@ -164,8 +165,8 @@ class Client {
                 ]
                 .filter(c=>{return c})
                 console.log(channels)
-                alert('setting')
                 channels.forEach(channel=>{
+                    alert(`joining channel: ${channel}`)
                     this.joinChannel(channel)
                 })
                 alert()
