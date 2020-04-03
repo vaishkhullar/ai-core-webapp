@@ -92,6 +92,20 @@ class Student extends Component {
                 }}, 500)
             }
         })
+        document.addEventListener("keydown", this._handleKeyDown);
+    }
+
+    componentWillUnmount = () => {
+        document.removeEventListener("keydown", this._handleKeyDown);
+    }
+
+    _handleKeyDown = e =>{
+        console.log(e.which)
+        switch (e.which) {
+            case 83:
+                this.toggleScreenshare()
+                return
+        }
     }
 
     setLobby = (lobby) => {
@@ -293,7 +307,14 @@ class Student extends Component {
                     margin-bottom: 0;
                 }
             }
+
+            .placeholder {
+                color: black;
+            }
         `
+        if (this.state.lobby) {
+            console.log(Object.keys(this.state.lobby.members).length == 0 )
+        }
         return (
             <>
             <div css={style}>
@@ -329,34 +350,37 @@ class Student extends Component {
                     } */}
                     {
                     this.state.lobby?
-                    Object.keys(this.state.lobby.members).map(conn_id=>{
-                        console.log(conn_id)
-                        console.log(this.state.lobby)
-                        console.log(this.state.lobby.members[conn_id])
-                        console.log(this.state.lobby.members[conn_id].signaling_channel)
-                        console.log(this.state.lobby.members[conn_id].screenshare_signaling_channel)
-                        var webcam_channel = this.state.lobby.members[conn_id].signaling_channel
-                        var screenshare_channel = this.state.lobby.members[conn_id].screenshare_signaling_channel
-                        var webcam = this.state.remoteStreams[webcam_channel]
-                        var screenshare = this.state.remoteStreams[screenshare_channel]
-                        console.log(this.state.user_id)
-                        console.log(this.state.lobby.members[conn_id].user_id)
-                        if (this.state.user_id == this.state.lobby.members[conn_id].user_id) {return null} // dont render yourself
-                        return <div className="other">
-                            <div className="title">
-                                {this.state.lobby.members[conn_id].user_info.name}
+                        Object.keys(this.state.lobby.members).length == 1 ? // if only you in the lobby
+                        <div className="placeholder">You're the only one in this lobby</div>
+                        :
+                        Object.keys(this.state.lobby.members).map(conn_id=>{
+                            console.log(conn_id)
+                            console.log(this.state.lobby)
+                            console.log(this.state.lobby.members[conn_id])
+                            console.log(this.state.lobby.members[conn_id].signaling_channel)
+                            console.log(this.state.lobby.members[conn_id].screenshare_signaling_channel)
+                            var webcam_channel = this.state.lobby.members[conn_id].signaling_channel
+                            var screenshare_channel = this.state.lobby.members[conn_id].screenshare_signaling_channel
+                            var webcam = this.state.remoteStreams[webcam_channel]
+                            var screenshare = this.state.remoteStreams[screenshare_channel]
+                            console.log(this.state.user_id)
+                            console.log(this.state.lobby.members[conn_id].user_id)
+                            if (this.state.user_id == this.state.lobby.members[conn_id].user_id) {return null} // dont render yourself
+                            return <div className="other">
+                                <div className="title">
+                                    {this.state.lobby.members[conn_id].user_info.name}
+                                </div>
+                                <div className="streams">
+                                    {webcam?<VideoOutput video={webcam[0]} />:null}
+                                    {screenshare?<VideoOutput video={screenshare[0]} />:null}
+                                </div>
                             </div>
-                            <div className="streams">
-                                {webcam?<VideoOutput video={webcam[0]} />:null}
-                                {screenshare?<VideoOutput video={screenshare[0]} />:null}
-                            </div>
-                        </div>
-                    })
+                        })
                     :
-                    <>
+                    <div className="placeholder">
                         Joining lobby
                         <Loading />
-                    </>
+                    </div>
                     }
                     {/* {JSON.stringify(this.props.user_info)} */}
                     {/* {JSON.stringify(this.state.lobby)} */}

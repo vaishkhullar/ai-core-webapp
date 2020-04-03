@@ -175,7 +175,7 @@ class Client {
                 console.log(this.currentLobby)
                 console.log(this.viewers)
                 var new_member = this.currentLobby.members[connection_id]
-                var channels = [new_member.signaling_channel, new_member.screenshare_signaling_channel].filter(c=>{return c})
+                var channels = [new_member.signaling_channel].filter(c=>{return c})
                 console.log(channels)
                 channels.forEach(channel=>{
                     console.log('removing channel:', channel)
@@ -220,6 +220,7 @@ class Client {
 
     close = () => {
         this.master.stopMaster() // stop master
+        console.log(this.viewers)
         Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
     }
 }
