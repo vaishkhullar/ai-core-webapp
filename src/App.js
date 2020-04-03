@@ -25,6 +25,7 @@ import About from "./components/landing/About";
 import OpenHacking from "./components/landing/OpenHacking";
 import PrivacyPolicy from "./components/landing/PrivacyPolicy";
 import Classroom from "./components/classroom/Classroom"
+import Teacher from "./components/classroom/NewTeacher"
 
 export const history = createHistory()
 history.listen((location, action) => {
@@ -228,6 +229,7 @@ class _Routes extends Component {
             {/* <Route path="/openhacking" component={OpenHacking} /> */}
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <ProtectedRoute path="/classroom" component={Classroom} />
+            <ProtectedRoute path="/teacher" component={Teacher} />
             <Route path="/" component={LandingIndex} />
             <Route component={NotFound} path=""/> 
         </Switch>

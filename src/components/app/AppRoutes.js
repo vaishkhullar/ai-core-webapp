@@ -18,6 +18,7 @@ import LobbyHolder from "../classroom/LobbyHolder"
 
 import { css, jsx } from "@emotion/core"
 import RepCounter from "./RepCounter"
+import Applied from "./Applied"
 /** @jsx jsx */
 
 const AppRoutes = (props) => {
@@ -49,6 +50,7 @@ const AppRoutes = (props) => {
                 <Route path="/app/projects" component={Projects} />
                 <Route path="/app/notifications" component={NotificationPage} />
                 <Route path="/app/hacking" component={Student} />
+                <Route path="/app/applied" component={Applied} />
                 {/* <Route path='/app/classroom' component={LobbyHolder} /> */}
             </div>
         </>

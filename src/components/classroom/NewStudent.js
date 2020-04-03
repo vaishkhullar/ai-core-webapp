@@ -102,7 +102,7 @@ class Student extends Component {
     _handleKeyDown = e =>{
         console.log(e.which)
         switch (e.which) {
-            case 83:
+            case 83: // press s for screenshare
                 this.toggleScreenshare()
                 return
         }

@@ -2,11 +2,12 @@ import Viewer from "./SignalingChannelViewer"
 import Master from "./SignalingChannelMaster"
 
 class Client {
-    constructor(user_id, user_info, setLobby, setStreams, onReady) {
+    constructor(user_id, user_info, setLobby, setStreams, handler={}, onReady) {
         this.user_id = user_id
         this.user_info = user_info
         this.setLobby = setLobby
         this.setStreams = setStreams
+        this.handler = handler
         this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
         this.websocket.onmessage = this.handleMessage
         this.viewers = {}
@@ -114,7 +115,7 @@ class Client {
         }))
         // this.master.stopMaster() // stop streaming from here
         Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
-        this.currentLobby = {}
+        this.currentLobby = null
         this.setLobby(this.currentLobby)
     }
 
@@ -167,6 +168,7 @@ class Client {
                 // this.master.stopMaster()
                 if (this.currentLobby) {this.leaveLobby()}
                 this.joinLobby(lobby)
+                console.log(lobby)
                 this.setLobby(lobby)
                 return
             case "member-left-lobby":
@@ -213,6 +215,9 @@ class Client {
                 // alert()
                 return
             default:
+                if (Object.keys(this.handler).includes(body.type)) {
+                    this.handler[body.type](body.content)
+                }
                 console.error('message type not recognised:')
                 console.error(body)
         }
