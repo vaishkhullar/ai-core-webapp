@@ -128,13 +128,14 @@ class Client {
     }
 
     startScreenshare = async (stream) => {
-        this.screenshareMaster = new Master(
-            stream,
-            null,
-            this.screenshare_signaling_channel,
-            (message)=>{console.log('REMOTE MESSAGE FROM CLIENT MASTER:', message)},
-            (e)=>{console.log('[MASTER] stats report:', e)},
-        )
+        this.master.replaceTrack(stream)
+        // this.screenshareMaster = new Master(
+        //     stream,
+        //     null,
+        //     this.screenshare_signaling_channel,
+        //     (message)=>{console.log('REMOTE MESSAGE FROM CLIENT MASTER:', message)},
+        //     (e)=>{console.log('[MASTER] stats report:', e)},
+        // )
     }
 
     stopScreenshare = () => {

@@ -85,7 +85,7 @@ class Student extends Component {
         this.wait = setInterval(()=>{if (this.streamlineClient.ready) {
             this.streamlineClient.requestJoinLobby()
             this.toggleWebcam()
-            this.toggleScreenshare()
+            // this.toggleScreenshare()
             clearInterval(this.wait)
         }}, 500)
     }
