@@ -42,7 +42,8 @@ class Client {
         console.log(this.user_id)
         this.websocket.send(JSON.stringify({
             action: 'get-signaling-channel',
-            user_id: this.user_id
+            user_id: this.user_id,
+            user_info: {name: 'Harry'}
         }))
     }
 
@@ -66,12 +67,16 @@ class Client {
         //     this.joinChannel(info.signaling_channel)
         //     this.joinChannel(info.screenshare_signaling_channel)
         // })
-        for (var channels of Object.values(lobby.members).flat()) {
-            console.log(channels)
-            Object.values(channels).forEach(channel=>{
-                this.joinChannel(channel)
-            })
-        }
+        // for (var channels of Object.values(lobby.members)
+        Object.values(lobby.members)
+        .map(mem=>{return mem.signaling_channel})
+        .forEach(channel=>{this.joinChannel(channel)})
+        // .flat()) {
+        //     console.log(channels)
+        //     Object.values(channels).forEach(channel=>{
+        //         this.joinChannel(channel)
+        //     })
+        // }
         // alert('joined lobby')
     }
 

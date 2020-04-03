@@ -3,7 +3,7 @@ import { Auth } from "aws-amplify"
 import { VideoOutput } from "./VideoOutput"
 import { css, jsx } from "@emotion/core"
 /** @jsx jsx */
-import { Button, IconButtons, expand_in } from "mvp-webapp"
+import { Button, IconButtons, expand_in, Loading } from "mvp-webapp"
 import sound from "./sounds/time-is-now.mp3"
 import exitsound from "./sounds/me-too.mp3"
 import { connect } from "react-redux"
@@ -309,11 +309,10 @@ class Student extends Component {
                     {/* <div onClick={()=>{window.open('https://remotedesktop.google.com/support')}}>Request remote control</div> */}
                 </div>
                 <div className="others">
-                    {Object.keys(this.state.remoteStreams).length == 0 ? 
+                    {/* {Object.keys(this.state.remoteStreams).length == 0 ? 
                         <div>There's nobody in this lobby yet</div> : 
                         <div># remote streams: {Object.values(this.state.remoteStreams).length}</div>
-                    }
-                    {JSON.stringify(this.state.lobby)}
+                    } */}
                     {
                     this.state.lobby?
                     Object.keys(this.state.lobby.members).map(conn_id=>{
@@ -331,7 +330,7 @@ class Student extends Component {
                         if (this.state.user_id == this.state.lobby.members[conn_id].user_id) {return null} // dont render yourself
                         return <div className="other">
                             <div className="title">
-                                Connection id: {conn_id}
+                                {this.state.lobby.members[conn_id].user_info.name}
                             </div>
                             <div className="streams">
                                 {webcam?<VideoOutput video={webcam[0]} />:null}
@@ -340,20 +339,12 @@ class Student extends Component {
                         </div>
                     })
                     :
-                    null
+                    <>
+                        Joining lobby
+                        <Loading />
+                    </>
                     }
-                    {/* {Object.keys(this.state.remoteStreams).map(channel => {
-                        return <div className="other">
-                            <div className="title">
-                                Channel: {channel}
-                            </div>
-                            <div className="streams">
-                                <div>
-                                    {this.state.remoteStreams[channel] ? <VideoOutput video={this.state.remoteStreams[channel][0]} /> : 'no streams'}
-                                </div>
-                            </div>
-                        </div>
-                    })} */}
+                    {JSON.stringify(this.state.lobby)}
                 </div>
             </div>
             </>
@@ -362,4 +353,10 @@ class Student extends Component {
     
 }
 
-export default Student
+const mapStateToProps = state => {
+    return {
+        name: state.user.about.name
+    }
+}
+
+export default connect(mapStateToProps)(Student)
