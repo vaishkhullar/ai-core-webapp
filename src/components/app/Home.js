@@ -56,11 +56,11 @@ class Home extends Component {
                         title: 'Open hacking',
                         faIcon: hackingIcon
                     },
-                    // {
-                    //     to: "/classroom",
-                    //     title: 'Classroom',
-                    //     faIcon: classroomIcon
-                    // },
+                    {
+                        to: "/classroom",
+                        title: 'Classroom',
+                        faIcon: classroomIcon
+                    },
                     // {
                     //     to: "app/classroom",
                     //     title: 'Classroom',

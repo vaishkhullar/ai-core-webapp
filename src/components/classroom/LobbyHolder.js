@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { css, jsx } from "@emotion/core"
-import Student from "./Student"
+import Student from "./NewStudent"
 import LobbySwitch from "./LobbySwitch"
 import ClassLobby from "./ClassLobby"
 /** @jsx jsx */
