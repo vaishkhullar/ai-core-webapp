@@ -14,6 +14,7 @@ import { faGlobe as opportunityIcon } from '@fortawesome/free-solid-svg-icons';
 import { faProjectDiagram as projectIcon } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt as eventsIcon } from '@fortawesome/free-solid-svg-icons';
 import { faUniversity as classroomIcon } from '@fortawesome/free-solid-svg-icons';
+import { faTerminal as hackingIcon } from '@fortawesome/free-solid-svg-icons';
 
 
 class Home extends Component {
@@ -51,10 +52,15 @@ class Home extends Component {
                         faIcon: projectIcon
                     },
                     {
-                        to: "/classroom",
-                        title: 'Classroom',
-                        faIcon: classroomIcon
+                        to: "/app/hacking",
+                        title: 'Open hacking',
+                        faIcon: hackingIcon
                     },
+                    // {
+                    //     to: "/classroom",
+                    //     title: 'Classroom',
+                    //     faIcon: classroomIcon
+                    // },
                     // {
                     //     to: "app/classroom",
                     //     title: 'Classroom',

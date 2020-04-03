@@ -13,6 +13,7 @@ import { Notification } from "./Notifications"
 import NotificationPage from "./NotificationsPage"
 import Projects from "./Projects"
 import Classroom from "../classroom/Classroom"
+import Student from "../classroom/NewStudent"
 import LobbyHolder from "../classroom/LobbyHolder"
 
 import { css, jsx } from "@emotion/core"
@@ -47,6 +48,7 @@ const AppRoutes = (props) => {
                 <Route path="/app/opportunities" component={Opportunities} />
                 <Route path="/app/projects" component={Projects} />
                 <Route path="/app/notifications" component={NotificationPage} />
+                <Route path="/app/hacking" component={Student} />
                 {/* <Route path='/app/classroom' component={LobbyHolder} /> */}
             </div>
         </>
