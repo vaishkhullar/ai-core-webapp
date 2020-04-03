@@ -371,6 +371,13 @@ export default class Master {
 
     // }
 
+    replaceTrack = (track) => {
+        Object.values(peerConnectionByClientId).forEach(pc=>{
+            var senders = pc.getSenders()
+            console.log(senders)
+        })
+    }
+
     toggleWebcam = (stream) => {
         console.log('toggling webcam')
         console.log(stream)

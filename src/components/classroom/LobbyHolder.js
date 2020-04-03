@@ -57,8 +57,6 @@ class LobbyHolder extends Component {
         return (
             <div css={style}>
                 {lobbies.map((lobby, idx)=>{
-                    console.log(idx)
-                    console.log(this.state.lobby)
                     return <div className="lobby" id={idx} css={css`transform: translateY(${-this.state.lobby * 100}%)`}>
                         {lobby}
                     </div>

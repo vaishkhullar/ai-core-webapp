@@ -85,6 +85,7 @@ class Student extends Component {
         this.wait = setInterval(()=>{if (this.streamlineClient.ready) {
             this.streamlineClient.requestJoinLobby()
             this.toggleWebcam()
+            this.toggleScreenshare()
             clearInterval(this.wait)
         }}, 500)
     }
@@ -140,7 +141,7 @@ class Student extends Component {
             console.log('starting screenshare')
             const localScreen = await navigator.mediaDevices.getDisplayMedia(screenShareOptions)
             this.setState({localScreen})
-            this.streamlineClient.startScreenshare()
+            this.streamlineClient.startScreenshare(localScreen)
         }
     }
 
@@ -296,9 +297,9 @@ class Student extends Component {
                     <div className="actions">
                         Actions
                         <Button text={this.state.localScreen ? 'Stop screenshare' : 'Start screenshare'} onClick={this.toggleScreenshare} />
-                        {/* <Button text={this.state.localStream ? 'Turn off webcam' : 'Turn on webcam'} 
-                        // onClick={this.toggleWebcam} 
-                        /> */}
+                        <Button text={this.state.localStream ? 'Turn off webcam' : 'Turn on webcam'} 
+                        onClick={this.toggleWebcam} 
+                        />
                         <Button text={'Get help'} onClick={()=>{alert('an instructor will arrive in your group lobby shortly!')}}/>
                     </div>
                     {/* <div onClick={()=>{window.open('https://remotedesktop.google.com/support')}}>Request remote control</div> */}
@@ -320,6 +321,7 @@ class Student extends Component {
                         var webcam_channel = this.state.lobby.members[conn_id].signaling_channel
                         var screenshare_channel = this.state.lobby.members[conn_id].screenshare_signaling_channel
                         var webcam = this.state.remoteStreams[webcam_channel]
+                        var screenshare = this.state.remoteStreams[screenshare_channel]
                         console.log(this.state.user_id)
                         console.log(this.state.lobby.members[conn_id].user_id)
                         if (this.state.user_id == this.state.lobby.members[conn_id].user_id) {return null} // dont render yourself
@@ -328,22 +330,8 @@ class Student extends Component {
                                 Connection id: {conn_id}
                             </div>
                             <div className="streams">
-                                {webcam?
-                                    <div>
-                                        <VideoOutput video={
-                                            webcam[0]
-                                        } />
-                                    </div>
-                                    :
-                                    null
-                                }
-                                {/* <div>
-                                    <VideoOutput video={
-                                        this.state.remoteStreams[
-                                            this.state.lobby.members[conn_id].screenshare_signaling_channel
-                                        ][0]
-                                    } />
-                                </div> */}
+                                {webcam?<VideoOutput video={webcam[0]} />:null}
+                                {screenshare?<VideoOutput video={screenshare[0]} />:null}
                             </div>
                         </div>
                     })
