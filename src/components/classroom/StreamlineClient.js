@@ -2,13 +2,14 @@ import Viewer from "./SignalingChannelViewer"
 import Master from "./SignalingChannelMaster"
 
 class Client {
-    constructor(user_id, setLobby, setStreams, onReady) {
+    constructor(user_id, user_info, setLobby, setStreams, onReady) {
+        this.user_id = user_id
+        this.user_info = user_info
         this.setLobby = setLobby
         this.setStreams = setStreams
         this.websocket = new WebSocket('wss://58f6e9lwd7.execute-api.eu-west-2.amazonaws.com/prod')
         this.websocket.onmessage = this.handleMessage
         this.viewers = {}
-        this.user_id = user_id
         this.ready = false
         this.streams = {}
         this.interval = setInterval(()=>{
@@ -43,7 +44,7 @@ class Client {
         this.websocket.send(JSON.stringify({
             action: 'get-signaling-channel',
             user_id: this.user_id,
-            user_info: {name: 'Harry'}
+            user_info: this.user_info
         }))
     }
 

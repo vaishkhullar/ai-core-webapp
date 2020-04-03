@@ -30,16 +30,16 @@ import StreamlineClient from "./StreamlineClient"
 const widescreen = false
 const webcamOptions = {
         video: {
-            width: { ideal : 320 },
-            height: { ideal : 240 },
+            width: { ideal : 320*2 },
+            height: { ideal : 240*2 },
             mediaSource: "screen"
         },
         audio: true,
 }
 const screenShareOptions = {
     video: {
-        width: { ideal : 320 },
-        height: { ideal : 240 },
+        width: { ideal : 320*2*2 },
+        height: { ideal : 240*2*2 },
         cursor: "always"
     },
     // audio: true
@@ -76,18 +76,22 @@ class Student extends Component {
         var user_id = creds.username
         user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-${this.props.mem}` : user_id
         this.setState({user_id})
-        this.streamlineClient = new StreamlineClient(
-            user_id,
-            this.setLobby,
-            this.setStreams,
-            // this.streamlineClient.requestJoinLobby
-        )
-        this.wait = setInterval(()=>{if (this.streamlineClient.ready) {
-            this.streamlineClient.requestJoinLobby()
-            this.toggleWebcam()
-            // this.toggleScreenshare()
-            clearInterval(this.wait)
-        }}, 500)
+        this.wait = setInterval(()=>{ // wait for user name
+            if (this.props.user_info.name) {
+                this.streamlineClient = new StreamlineClient(
+                    user_id,
+                    this.props.user_info,
+                    this.setLobby,
+                    this.setStreams,
+                )
+                clearInterval(this.wait)
+                this.wait = setInterval(()=>{if (this.streamlineClient.ready) { // wait for websocket to connect
+                    this.streamlineClient.requestJoinLobby()
+                    this.toggleWebcam()
+                    clearInterval(this.wait)
+                }}, 500)
+            }
+        })
     }
 
     setLobby = (lobby) => {
@@ -219,14 +223,20 @@ class Student extends Component {
                     margin: 5px;
                     // padding: 5px;
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
+                    justify-content: space-between;
                     position: relative;
                     box-sizing: border-box;
                     background-color: black;
-                    max-width: 100%;
+                    width: 400px;
+                    min-height: 268px;
+                    min-width: 326px;
+                    animation-name: ${expand_in};
+                    animation-duration: 1s;
 
                     .title {
-                        position: absolute;
+                        // position: absolute;
+                        text-align: start;
                         color: var(--color2);
                         font-weight: 1000;
                     }
@@ -234,7 +244,7 @@ class Student extends Component {
                     .streams {
                         display: flex;
                     
-                        height: 180px;
+                        height: 100%;
                         min-width: 200px;
                         max-width: 100%;
 
@@ -249,6 +259,8 @@ class Student extends Component {
                         video {
                             // border: 4px solid black;
                             // border-radius: 10px;
+                            max-height: 100%;
+                            max-width: 100%;
                         }
                       
                     }
@@ -261,6 +273,7 @@ class Student extends Component {
                 padding: 3px;
                 margin: 3px auto;
                 border: 2px solid black;
+                padding: 20px;
                 width: 60px;
                 cursor: pointer;
                 :hover {
@@ -274,6 +287,7 @@ class Student extends Component {
             .actions {
                 display: flex;
                 flex-direction: column;
+                padding: 20px;
                 button {
                     margin: 10px;
                     margin-bottom: 0;
@@ -301,9 +315,9 @@ class Student extends Component {
                     <div className="actions">
                         Actions
                         <Button text={this.state.localScreen ? 'Stop screenshare' : 'Start screenshare'} onClick={this.toggleScreenshare} />
-                        <Button text={this.state.localStream ? 'Turn off webcam' : 'Turn on webcam'} 
+                        {/* <Button text={this.state.localStream ? 'Turn off webcam' : 'Turn on webcam'} 
                         onClick={this.toggleWebcam} 
-                        />
+                        /> */}
                         <Button text={'Get help'} onClick={()=>{alert('an instructor will arrive in your group lobby shortly!')}}/>
                     </div>
                     {/* <div onClick={()=>{window.open('https://remotedesktop.google.com/support')}}>Request remote control</div> */}
@@ -344,7 +358,8 @@ class Student extends Component {
                         <Loading />
                     </>
                     }
-                    {JSON.stringify(this.state.lobby)}
+                    {/* {JSON.stringify(this.props.user_info)} */}
+                    {/* {JSON.stringify(this.state.lobby)} */}
                 </div>
             </div>
             </>
@@ -355,7 +370,9 @@ class Student extends Component {
 
 const mapStateToProps = state => {
     return {
-        name: state.user.about.name
+        user_info: {
+            name: state.user.about.name
+        }
     }
 }
 
