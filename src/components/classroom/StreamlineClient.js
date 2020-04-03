@@ -219,9 +219,13 @@ class Client {
     }
 
     close = () => {
-        this.master.stopMaster() // stop master
+        try {
+            this.master.stopMaster() // stop master
+        }catch {}
         console.log(this.viewers)
-        Object.values(this.viewers).forEach(viewer=>viewer.stopViewer()) // stop all viewers
+        Object.values(this.viewers).forEach(viewer=>{
+            try {viewer.stopViewer()}catch{}
+        }) // stop all viewers
     }
 }
 
