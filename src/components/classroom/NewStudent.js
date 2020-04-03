@@ -135,7 +135,11 @@ class Student extends Component {
         if (this.state.localScreen) {
             console.log('stopping screenshare')
             this.setState({localScreen: null})
-            this.streamlineClient.stopScreenshare()
+            // this.streamlineClient.stopScreenshare()
+            
+            const localStream = await navigator.mediaDevices.getUserMedia(webcamOptions)
+            this.setState({localStream})
+            this.streamlineClient.replaceVideoStream(localStream)
         }
         else {
             console.log('starting screenshare')

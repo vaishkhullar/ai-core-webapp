@@ -128,7 +128,7 @@ class Client {
     }
 
     startScreenshare = async (stream) => {
-        this.master.replaceTrack(stream)
+        this.master.replaceVideoStream(stream)
         // this.screenshareMaster = new Master(
         //     stream,
         //     null,
@@ -139,8 +139,13 @@ class Client {
     }
 
     stopScreenshare = () => {
-        this.screenshareMaster.stopMaster()
-        this.screenshareMaster = null
+        this.master.replaceVideoStream(null)
+        // this.screenshareMaster.stopMaster()
+        // this.screenshareMaster = null
+    }
+
+    replaceVideoStream = (stream) => {
+        this.master.replaceVideoStream(stream)
     }
 
     handleMessage = (message) =>{

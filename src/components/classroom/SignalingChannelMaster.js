@@ -371,16 +371,19 @@ export default class Master {
 
     // }
 
-    replaceTrack = (stream) => {
-        console.log(stream)
-        var tracks = stream.getTracks()
-        tracks.forEach(t=>{
-            console.log(t)
-        })
-        let track = stream.getVideoTracks()[0]
+    replaceVideoStream = (stream) => {
+        // if (!stream) {
+        //     Object.values(this.peerConnectionByClientId).forEach(pc=>{
+        //         var senders = pc.getSenders()
+        //         var sender = senders.find(s=>{return s.track.kind == 'video'})
+        //         sender.replaceTrack(null)
+        //     })
+        //     return
+        // }
+        let track = stream ? stream.getVideoTracks()[0] : null
         Object.values(this.peerConnectionByClientId).forEach(pc=>{
             var senders = pc.getSenders()
-            var sender = senders.find(s=>{return s.track.kind == track.kind})
+            var sender = senders.find(s=>{return s.track.kind == 'video'})
             sender.replaceTrack(track)
             // console.log(senders)
             // senders.forEach(s=>{console.log(s.track);console.log(s.track)})
