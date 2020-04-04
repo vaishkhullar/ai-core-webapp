@@ -43,7 +43,7 @@ class Teacher extends Component {
     componentDidMount = async () => {
         var creds = await Auth.currentAuthenticatedUser()
         var user_id = creds.username
-        user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-${this.props.mem}` : user_id
+        user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-teacher` : user_id
         this.setState({user_id})
         this.wait = setInterval(()=>{ // wait for user name
             if (this.props.user_info.name) {
@@ -95,7 +95,7 @@ class Teacher extends Component {
             "list-lobbies": content => {
                 this.setState({lobbies: content}, ()=>{console.log(this.state.lobbies)})
                 console.log(content)
-                alert('got lobbies')
+                // alert('got lobbies')
             },
             "join-teacher-lobby": content => {
                 this.setState({
@@ -103,9 +103,9 @@ class Teacher extends Component {
                     lobby: content
                 }, ()=>{
                     console.log(this.state.teacher_lobby)
-                    this.streamlineClient.joinLobby(content)
+                    this.streamlineClient.requestJoinLobby(content.lobby_id)
                 })
-                alert('joined teacher lobby')
+                // alert('joined teacher lobby')
             }
         }
     }

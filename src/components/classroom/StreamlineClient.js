@@ -217,13 +217,21 @@ class Client {
             default:
                 if (Object.keys(this.handler).includes(body.type)) {
                     this.handler[body.type](body.content)
+                    return
                 }
                 console.error('message type not recognised:')
                 console.error(body)
+                alert('Message type not recognised')
         }
     }
 
     close = () => {
+        //     alert('leaving lobby')
+        // if (this.currentLobby) {
+        //     this.websocket.send(JSON.stringify({
+        //         action: 'leave-lobby'
+        //     }))
+        // } 
         try {
             this.master.stopMaster() // stop master
         }catch {}
