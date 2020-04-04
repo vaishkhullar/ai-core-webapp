@@ -29,8 +29,8 @@ const style = css`
 
 const lobbies = [
     <ClassLobby />,
-    <Student mem={6} />,
-    <ClassLobby />
+    // <Student mem={6} />,
+    // <ClassLobby />
 ]
 
 const lobbyMap = {
@@ -62,9 +62,9 @@ class LobbyHolder extends Component {
                     </div>
                 }
                 )}
-                <div className="switch">
+                {/* <div className="switch">
                     <LobbySwitch lobby={this.state.lobbyName} setLobby={this.setLobby}/>
-                </div>
+                </div> */}
             </div>
         )
     }

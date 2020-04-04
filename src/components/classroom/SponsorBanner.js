@@ -52,8 +52,8 @@ class SponsorBanner extends Component {
                     // .then(data=>console.log(data))
                     // .cat
                     console.log(response)
-                    alert()
-                    // window.open('/app/applied')
+                    // alert()
+                    window.open('/app/applied')
                 }}/>
             </div>
         </div>
