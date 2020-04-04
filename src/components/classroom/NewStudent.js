@@ -92,21 +92,21 @@ class Student extends Component {
                 }}, 500)
             }
         })
-        document.addEventListener("keydown", this._handleKeyDown);
+        // document.addEventListener("keydown", this._handleKeyDown);
     }
 
     componentWillUnmount = () => {
-        document.removeEventListener("keydown", this._handleKeyDown);
+        // document.removeEventListener("keydown", this._handleKeyDown);
     }
 
-    _handleKeyDown = e =>{
-        console.log(e.which)
-        switch (e.which) {
-            case 83: // press s for screenshare
-                this.toggleScreenshare()
-                return
-        }
-    }
+    // _handleKeyDown = e =>{
+    //     console.log(e.which)
+    //     switch (e.which) {
+    //         case 83: // press s for screenshare
+    //             this.toggleScreenshare()
+    //             return
+    //     }
+    // }
 
     setLobby = (lobby) => {
         this.setState({lobby})
