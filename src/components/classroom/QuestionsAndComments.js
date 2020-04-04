@@ -45,7 +45,7 @@ const style = css`
         flex-direction: column;
         overflow-y: scroll;
         margin-top: 5px;
-        height: 255px;
+        height: 173px;
 
         ::-webkit-scrollbar {
             width: 6px;
