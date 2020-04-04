@@ -51,16 +51,16 @@ class Home extends Component {
                         title: 'Projects',
                         faIcon: projectIcon
                     },
-                    {
-                        to: "/app/hacking",
-                        title: 'Open hacking',
-                        faIcon: hackingIcon
-                    },
-                    {
-                        to: "/classroom",
-                        title: 'Classroom',
-                        faIcon: classroomIcon
-                    },
+                    // {
+                    //     to: "/app/hacking",
+                    //     title: 'Open hacking',
+                    //     faIcon: hackingIcon
+                    // },
+                    // {
+                    //     to: "/classroom",
+                    //     title: 'Classroom',
+                    //     faIcon: classroomIcon
+                    // },
                     // {
                     //     to: "app/classroom",
                     //     title: 'Classroom',
