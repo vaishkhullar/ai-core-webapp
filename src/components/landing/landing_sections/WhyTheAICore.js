@@ -45,6 +45,7 @@ export default () =>{
         <div css={style}>
             <h1>
                 Why the <span>AI Core</span>?
+                
             </h1>
             <div className="row">
                 <div className="col">
