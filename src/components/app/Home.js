@@ -51,11 +51,11 @@ class Home extends Component {
                         title: 'Projects',
                         faIcon: projectIcon
                     },
-                    // {
-                    //     to: "/app/hacking",
-                    //     title: 'Open hacking',
-                    //     faIcon: hackingIcon
-                    // },
+                    {
+                        to: "/app/hacking",
+                        title: 'Open hacking',
+                        faIcon: hackingIcon
+                    },
                     // {
                     //     to: "/classroom",
                     //     title: 'Classroom',
