@@ -24,7 +24,7 @@ import Applied from "./Applied"
 const AppRoutes = (props) => {
     return (
         <>
-            <AskForDetails />
+            {/* <AskForDetails /> */}
             <Navbar btn='Menu' action={props.openMenu} back={'/app'} root='/app' roots={['/app']}/>
             <Sidebar items={[
                 {title: 'Profile', faIcon: faUser, to: '/app/profile'},

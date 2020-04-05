@@ -355,6 +355,9 @@ class Student extends Component {
                     JSON.stringify(this.state.lobby.members):
                     null}
                     {
+                        JSON.stringify(this.state.remoteStreams)
+                    }
+                    {
                     this.state.lobby?
                         Object.keys(this.state.lobby.members).length == 1 ? // if only you in the lobby
                         <div className="placeholder">You're the only one in this lobby</div>

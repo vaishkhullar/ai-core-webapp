@@ -19,20 +19,20 @@ class Client {
                 this.interval = null
                 this.getSignalingChannel()
             }
-        }, 1000)
+        }, 
+        1000)
         // this.refresh_viewers = setInterval(()=>{
+        //     console.log('refreshing')
         //     Object.keys(this.viewers).forEach(channel=>{
         //         if (!this.streams[channel]) { // if we not yet received streams from this channel
+        //             console.log('refreshing for viewer', channel)
         //             this.setViewer(channel) // reset the viewer (SDP offer will now be made after master has been created)
         //         }
         //     })
-        // }, 1000)
+        // }, 5000)
     }
 
     _setStreams = (newStreams, channel) => {
-        var screenshare_channels = Object.values(this.currentLobby.members).map(info=>info.screenshare_signaling_channel)
-        console.log(screenshare_channels)
-        if (channel in screenshare_channels) {alert(`got screenshare from channel ${channel}`)}
         this.streams = {
             ...this.streams,
             [channel]: newStreams
@@ -204,7 +204,7 @@ class Client {
                 this.setLobby(this.currentLobby)
                 var channels = [
                     new_member[connection_id].signaling_channel, 
-                    new_member[connection_id].screenshare_signaling_channel
+                    // new_member[connection_id].screenshare_signaling_channel
                 ]
                 .filter(c=>{return c})
                 console.log(channels)
@@ -233,7 +233,7 @@ class Client {
         //     }))
         // } 
         if (this.websocket) {
-            this.websocket.close()
+            // this.websocket.close()
         }
         if (this.master) {
             this.master.stopMaster() // stop master
