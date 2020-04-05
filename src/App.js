@@ -229,7 +229,10 @@ class _Routes extends Component {
             {/* <Route path="/openhacking" component={OpenHacking} /> */}
             <Route path="/privacy-policy" component={PrivacyPolicy} />
             <ProtectedRoute path="/classroom" component={Classroom} />
-            <ProtectedRoute path="/teacher" component={Teacher} />
+            <ProtectedRoute path="/teacher" render={()=>{return <Teacher idx={1}/>}} />
+            <ProtectedRoute path="/teacher" render={()=>{return <div style={{color: 'red'}}>yo</div>}} />
+            <ProtectedRoute path="/teacher2" render={()=>{return <Teacher idx={2}/>}} />
+            <ProtectedRoute path="/teacher3" render={()=>{return <Teacher idx={3}/>}} />
             <Route path="/" component={LandingIndex} />
             <Route component={NotFound} path=""/> 
         </Switch>

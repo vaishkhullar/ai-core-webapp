@@ -70,10 +70,21 @@ const AppRoutes = (props) => {
                         //     icon: code
                         // },
                         {
-                            onClick: ()=>{window.open("/classroom/teacher")},
+                            onClick: ()=>{window.open("/teacher")},
                             title: "Teacher",
                             icon: code
-                        },]}
+                        },
+                        {
+                            onClick: ()=>{window.open("/teacher2")},
+                            title: "Teacher",
+                            icon: code
+                        },
+                        {
+                            onClick: ()=>{window.open("/teacher2")},
+                            title: "Teacher",
+                            icon: code
+                        },
+                    ]}
                         />
 
                     }}/>

@@ -70,7 +70,12 @@ export class ProtectedRoute extends Component {
     }
 
     render() {
-    const { component: Component, ...props } = this.props
+
+        if (this.props.render) {
+            return this.props.render()
+        }
+
+        const { component: Component, ...props } = this.props
     if (this.state.ready) {
         // console.log('sess:',this.state.sess)
         return (

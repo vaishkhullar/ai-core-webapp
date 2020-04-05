@@ -43,7 +43,7 @@ class Teacher extends Component {
     componentDidMount = async () => {
         var creds = await Auth.currentAuthenticatedUser()
         var user_id = creds.username
-        user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-teacher` : user_id
+        user_id = user_id == 'b95f3892-8887-4dbc-9479-a1c42b9133d9' ? `id-${this.props.idx}` : user_id
         this.setState({user_id})
         this.wait = setInterval(()=>{ // wait for user name
             if (this.props.user_info.name) {
