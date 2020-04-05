@@ -191,7 +191,7 @@ class Client {
                 console.log(this.currentLobby)
                 this.setLobby(this.currentLobby)
                 console.log(this.viewers)
-                // alert('member left lobby')
+                alert('member left lobby')
                 return
             case "member-joined-lobby":
                 var new_member = body.content
@@ -232,10 +232,12 @@ class Client {
         //         action: 'leave-lobby'
         //     }))
         // } 
-        try {
+        if (this.websocket) {
+            this.websocket.close()
+        }
+        if (this.master) {
             this.master.stopMaster() // stop master
-        }catch {}
-        console.log(this.viewers)
+        }
         Object.values(this.viewers).forEach(viewer=>{
             try {viewer.stopViewer()}catch{}
         }) // stop all viewers

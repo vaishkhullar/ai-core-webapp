@@ -36,6 +36,7 @@ const AppRoutes = (props) => {
                 <Route path="/classroom/mem3" render={()=>{return <Student mem={3} />}} />
                 <Route path="/classroom/mem4" render={()=>{return <Student mem={4} />}} />
                 <Route path="/classroom/mem5" render={()=>{return <Student mem={5} />}} />
+                <Route path="/classroom/mem6" render={()=>{return <Student mem={6} />}} />
 
                 <Route path='/classroom' exact render={()=>{
                     return<TileGrid tiles={[
@@ -62,6 +63,11 @@ const AppRoutes = (props) => {
                         {
                             onClick: ()=>{window.open("/classroom/mem5")},
                             title: "Member 5",
+                            icon: code
+                        },
+                        {
+                            onClick: ()=>{window.open("/classroom/mem6")},
+                            title: "Member 6",
                             icon: code
                         },
                         // {

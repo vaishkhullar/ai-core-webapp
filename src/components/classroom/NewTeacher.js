@@ -320,13 +320,25 @@ class Teacher extends Component {
             .placeholder {
                 color: black;
             }
-                    
-            .lobby {
-                font-size: 12px;
-                cursor: pointer;
-                border: 3px solid black;
-                margin: 20px;
+
+            .lobbies {
+                display: flex;
+                
+
+                .lobby {
+                    font-size: 12px;
+                    cursor: pointer;
+                    border: 3px solid black;
+                    border-radius: 4px;
+                    background-color: #18181b;
+                    color: #ff822e;
+                    margin: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    width: 200px;
+                }
             }
+                    
         `
         console.log(this.state.lobby)
         return (
@@ -403,10 +415,11 @@ class Teacher extends Component {
                 <div className="lobbies">
                     {this.state.lobbies.map((lobby, idx)=>{
                         return (
-                        // <div className="lobby" onClick={()=>{this.requestJoinLobby(lobby.lobby_id)}}>
-                            // {JSON.stringify(lobby)}
-                        // </div>
-                            <Button text={`Join lobby ${idx}`} onClick={()=>{this.streamlineClient.requestJoinLobby(lobby.lobby_id)}}/>
+                        <div className="lobby">
+                            {Object.values(lobby.members).map(m=>{return <div>{m.user_info.name}</div>})}
+                            {/* {JSON.stringify(lobby)} */}
+                            <Button text={`Join lobby ${idx+1}`} onClick={()=>{this.streamlineClient.requestJoinLobby(lobby.lobby_id)}}/>
+                        </div>
                         )
                     })}
                 </div>

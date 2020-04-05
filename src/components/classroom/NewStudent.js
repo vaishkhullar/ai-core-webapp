@@ -85,11 +85,13 @@ class Student extends Component {
                     this.setStreams,
                 )
                 clearInterval(this.wait)
-                this.wait = setInterval(()=>{if (this.streamlineClient.ready) { // wait for websocket to connect
-                    this.streamlineClient.requestJoinLobby()
-                    this.toggleWebcam()
-                    clearInterval(this.wait)
-                }}, 500)
+                this.wait = setInterval(()=>{
+                    if (this.streamlineClient.ready) { // wait for websocket to connect
+                        this.streamlineClient.requestJoinLobby()
+                        this.toggleWebcam()
+                        clearInterval(this.wait)
+                    }
+                }, 500)
             }
         })
         // document.addEventListener("keydown", this._handleKeyDown);
@@ -222,7 +224,7 @@ class Student extends Component {
                 width: 70%;
                 padding: 0 10px;
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center; 
                 box-sizing: border-box;
@@ -245,6 +247,7 @@ class Student extends Component {
                     width: 400px;
                     min-height: 268px;
                     min-width: 326px;
+                    max-width: 40%;
                     animation-name: ${expand_in};
                     animation-duration: 1s;
 
@@ -348,6 +351,9 @@ class Student extends Component {
                         <div>There's nobody in this lobby yet</div> : 
                         <div># remote streams: {Object.values(this.state.remoteStreams).length}</div>
                     } */}
+                    {this.state.lobby ?
+                    JSON.stringify(this.state.lobby.members):
+                    null}
                     {
                     this.state.lobby?
                         Object.keys(this.state.lobby.members).length == 1 ? // if only you in the lobby
@@ -369,6 +375,10 @@ class Student extends Component {
                             return <div className="other">
                                 <div className="title">
                                     {this.state.lobby.members[conn_id].user_info.name}
+                                    <br/>
+                                    {conn_id}
+                                    <br/>
+                                    {this.state.lobby.members[conn_id].signaling_channel}
                                 </div>
                                 <div className="streams">
                                     {webcam?<VideoOutput video={webcam[0]} />:null}
@@ -383,7 +393,6 @@ class Student extends Component {
                     </div>
                     }
                     {/* {JSON.stringify(this.props.user_info)} */}
-                    {/* {JSON.stringify(this.state.lobby)} */}
                 </div>
             </div>
             </>
