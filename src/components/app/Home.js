@@ -46,11 +46,11 @@ class Home extends Component {
                         title: 'Events',
                         faIcon: eventsIcon
                     },
-                    {
-                        to: "app/projects",
-                        title: 'Projects',
-                        faIcon: projectIcon
-                    },
+                    // {
+                    //     to: "app/projects",
+                    //     title: 'Projects',
+                    //     faIcon: projectIcon
+                    // },
                     {
                         to: "/app/hacking",
                         title: 'Open hacking',
@@ -60,6 +60,11 @@ class Home extends Component {
                         to: "/classroom",
                         title: 'Classroom',
                         faIcon: classroomIcon
+                    },
+                    {
+                        to: "/app/contribute",
+                        title: 'Contribute',
+                        faIcon: projectIcon
                     },
                     // {
                     //     to: "app/classroom",
