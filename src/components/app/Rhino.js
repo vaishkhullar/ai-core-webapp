@@ -153,10 +153,10 @@ export default function Rhino(props){
             <div style={{fontFamily:"var(--font1)"}}>
             <div className="form"  css={container_style}>
                 <div style={{fontSize: '30px', marginBottom: '20px', fontWeight: '900'}}>
-                    Crowdsource intelligance for the British Armed Forces to combat rhino poaching in Botswana
+                    Crowdsource intelligence to combat rhino poaching in Botswana
                 </div>
                 <div className="subtitle">
-                    In partnership with Adarga, we are going to crowsource a dataset to help military operations to tackle rhnio poaching in Botswana and North of the Zambezi river.
+                    In partnership with Adarga, we are going to crowdsource a dataset to help military operations to tackle rhino poaching in Botswana and North of the Zambezi river.
                     Phase 1 consists of finding URLs that can point to potentially useful data sources.
                     The next phase will consist of extracting data from these links, categorising it and cleaning it.
                     This next phase will being within the next 2 weeks. 
@@ -167,8 +167,8 @@ export default function Rhino(props){
                     <br/>
                     <br/>
                     A useful final output of this project would be code for producing different geographical heatmap overlays which then could be combined.
-                    For example, we could produce a heatmap of likely rhino watering holes, or heatmaps of difficult terrain for either poachers of rhinos.
-                    The eventual combination of these heatmaps will hopefully be able to inform where the Armed Forces should deploy their resources. 
+                    For example, we could produce a heatmap of likely rhino watering holes, or heatmaps of difficult terrain for either poachers or rhinos.
+                    The eventual combination of these heatmaps will hopefully be able to inform where forces on the ground should deploy their resources. 
                 </div>
                 <div className="field-container">
                 <div css={bar_style}>
