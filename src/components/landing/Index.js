@@ -11,7 +11,8 @@ import MainWorkshops from "./MainWorkshops"
 import { WorkshopsPreview } from "./Partnerships"
 import { importAll } from "../../utils"
 import Testimonials from "./Testimonials"
-import Opportunities from "./landing_sections/Opportunities"
+import WhyAiCore from "./Landing_sections/WhyAiCore"
+
 // import WhyTheAICore from "./landing_sections/WhyTheAICore"
 
 var heros = importAll(require.context('../../images/heros'), false)
@@ -53,8 +54,7 @@ class Home extends Component{
                 }}
                 heros={heros}
                 sections={[
-                    // <WhyTheAICore />,
-                    <Opportunities />,
+                    <WhyAiCore />,
                     <MainWorkshops />,
                     <WorkshopsPreview />,
                     <Testimonials />

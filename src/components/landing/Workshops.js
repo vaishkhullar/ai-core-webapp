@@ -6,7 +6,7 @@ import { css } from "@emotion/core"
 /** @jsx jsx */ import { jsx } from '@emotion/core'
 import { importAll } from "../../utils"
 import notebook from "../../images/misc/notebook-example.png"
-import workshop_vid from "../../videos/workshop.mp4"
+// import workshop_vid from "../../videos/workshop.mp4"
 // import hacking_imgs from "../../videos/hacking.mp4"
 import hacking from "../../images/events/hacking/1.jpg"
 
@@ -135,7 +135,7 @@ export default (props) => {
                 {
                     name: 'Workshops',
                     html: <Showcase 
-                                video={workshop_vid}
+                                // video={workshop_vid}
                                 text={[
                                     <>We train people to build state of the art stuff.</>, 
                                     <>We cover both the code and theory, and don't teach anything that's not practically useful.</>,

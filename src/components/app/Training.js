@@ -13,7 +13,7 @@ import adarga_logo from "../../images/brands/adarga_logo_whiteout.png"
 import amazon_logo from "../../images/brands/Amazon-logo-RGB-REV.png"
 
 
-const videos = importAll(require.context('../../videos'))
+// const videos = importAll(require.context('../../videos'))
 var video
 
 const content = [
