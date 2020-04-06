@@ -1,9 +1,8 @@
-}
 import AWS from "aws-sdk"
 import { SignalingClient, Role } from "amazon-kinesis-video-streams-webrtc"
 import { Auth } from "aws-amplify"
 
-const region = 'eu-west-1'
+const region = `eu-west-1`
 const natTraversalDisabled = false
 const forceTURN = true
 const openDataChannel = true
@@ -14,6 +13,7 @@ class Master {
         this.channel = channel
         this.clientId = clientId
         this.peerConnectionByClientId = {}
+        this.webcamSendersByClientId = {}
         this.start()
     }
 
@@ -28,13 +28,13 @@ class Master {
         const describeSignalingChannelResponse = await kinesisVideoClient
         .describeSignalingChannel({ChannelName: this.channel}).promise()
 
-        const channelARN = describeSignalingChannelResponse.ChannelInfo.channelARN
+        const channelARN = describeSignalingChannelResponse.ChannelInfo.ChannelARN
 
         const getSignalingChannelEndpointResponse = await kinesisVideoClient
-        .getSignalingChannelEndpointResponse({
-            channelARN: channelARN, 
+        .getSignalingChannelEndpoint({
+            ChannelARN: channelARN, 
             SingleMasterChannelEndpointConfiguration: {
-                Protocols: ['WSS', 'HTTPS'],
+                Protocols: [`WSS`, `HTTPS`],
                 Role: Role.MASTER
             }
         }).promise()
@@ -66,7 +66,7 @@ class Master {
         this.signalingClient = new SignalingClient({
             channelARN,
             channelEndpoint: endpointsByProtocol.WSS,
-            clientId: this.clientId,
+            // clientId: this.clientId, // master has no client id (not a client)
             role: Role.MASTER,
             region,
             credentials: {
@@ -78,20 +78,20 @@ class Master {
 
         const configuration = {
             iceServers,
-            iceTransportPolicy: forceTURN ? 'relay' : 'all'
+            iceTransportPolicy: forceTURN ? `relay` : `all`
         }
 
-        this.signalingClient.on('sdpOffer', async (offer, remoteClientId) => {
-            console.log('[MASTER] Received SDP offer from client: ' + remoteClientId);
+        this.signalingClient.on(`sdpOffer`, async (offer, remoteClientId) => {
+            console.log(`[${this.clientId}-MASTER] Received SDP offer from client: ` + remoteClientId);
 
-            console.log('[MASTER] Starting peerConnection');
+            console.log(`[${this.clientId}-MASTER] Starting peerConnection`);
             const peerConnection = new RTCPeerConnection(configuration);
 
             this.peerConnectionByClientId = {...this.peerConnectionByClientId, [remoteClientId]: peerConnection};
             if (openDataChannel) {
                 this.dataChannelByClientId = {
                     ...this.dataChannelByClientId,
-                    [remoteClientId]: peerConnection.createDataChannel('kvsDataChannel')
+                    [remoteClientId]: peerConnection.createDataChannel(`kvsDataChannel`)
                 }
                 peerConnection.ondatachannel = event => {
                     event.channel.onmessage = (message) =>{
@@ -106,40 +106,31 @@ class Master {
             }
 
             // Send any ICE candidates to the other peer
-            peerConnection.addEventListener('icecandidate', ({ candidate }) => {
+            peerConnection.addEventListener(`icecandidate`, ({ candidate }) => {
                 if (candidate) {
-                    console.log('[MASTER] Generated ICE candidate for client: ' + remoteClientId);
+                    console.log(`[${this.clientId}-MASTER] Generated ICE candidate for client: ` + remoteClientId);
                     // When trickle ICE is enabled, send the ICE candidates as they are generated.
                     if (useTrickleICE) {
-                        console.log('[MASTER] Sending ICE candidate to client: ' + remoteClientId);
+                        console.log(`[${this.clientId}-MASTER] Sending ICE candidate to client: ` + remoteClientId);
                         this.signalingClient.sendIceCandidate(candidate, remoteClientId);
                     }
                 } else {
-                    console.log('[MASTER] All ICE candidates have been generated for client: ' + remoteClientId);
+                    console.log(`[${this.clientId}-MASTER] All ICE candidates have been generated for client: ` + remoteClientId);
                     // When trickle ICE is disabled, send the answer now that all the ICE candidates have ben generated.
                     if (!useTrickleICE) {
-                        console.log('[MASTER] Sending SDP answer to client: ' + remoteClientId);
+                        console.log(`[${this.clientId}-MASTER] Sending SDP answer to client: ` + remoteClientId);
                         this.signalingClient.sendSdpAnswer(peerConnection.localDescription, remoteClientId);
                     }
                 }
             });
 
             // As remote tracks are received, add them to the remote view
-            console.log('setting peerConnection event handler for "track" (adding track)')
-            peerConnection.addEventListener('track', async event => {
-                console.log('[MASTER] Received remote track from client: ' + remoteClientId);
+            console.log(`setting peerConnection event handler for "track" (adding track)`)
+            peerConnection.addEventListener(`track`, async event => {
+                console.log(`[${this.clientId}-MASTER] Received remote track from client: ` + remoteClientId);
             });
 
-            var senders = []
-            var tracks = []
-            tracks.push(this.localStream.getTracks())
-            tracks.flat().forEach(track => {
-                console.log('adding local track:', track)
-                senders.push(peerConnection.addTrack(track, this.localStream))
-            });
-            this.webcamSendersByClientId[remoteClientId] = senders
-
-            console.log('SDP offer:', offer)
+            console.log(`SDP offer:`, offer)
             await peerConnection.setRemoteDescription(offer);
 
             await peerConnection.setLocalDescription(
@@ -150,49 +141,60 @@ class Master {
             )
  
             if (useTrickleICE) {
-                console.log('[MASTER] Sending SDP answer to client: ' + remoteClientId);
+                console.log(`[${this.clientId}-MASTER] Sending SDP answer to client: ` + remoteClientId);
                 this.signalingClient.sendSdpAnswer(peerConnection.localDescription, remoteClientId);
             }
 
             peerConnection.oniceconnectionstatechange = ()=>{
-                console.log('[MASTER] ice connection state changed to:', peerConnection.iceConnectionState)
-                if (peerConnection.iceConnectionState == 'disconnected') {
+                console.log(`[${this.clientId}-MASTER] ice connection state changed to:`, peerConnection.iceConnectionState)
+                if (peerConnection.iceConnectionState == `disconnected`) {
                     console.log(`client ${remoteClientId} disconnected`)
                     peerConnection.close() // MAYBE WAIT TO RECONNECT
                 }
             }
 
             peerConnection.onnegotiationneeded = async () => {
-                console.log('[MASTER] NEGOTIATION NEEDED')
+                console.log(`[${this.clientId}-MASTER] NEGOTIATION NEEDED`)
             }
 
-            console.log('[MASTER] Generating ICE candidates for client: ' + remoteClientId);
+            console.log(`[${this.clientId}-MASTER] Generating ICE candidates for client: ` + remoteClientId);
         });
 
-        this.signalingClient.on('iceCandidate', async (candidate, remoteClientId) => {
-            console.log('[MASTER] Received ICE candidate from client: ' + remoteClientId);
+        this.signalingClient.on(`iceCandidate`, async (candidate, remoteClientId) => {
+            console.log(`[${this.clientId}-MASTER] Received ICE candidate from client: ` + remoteClientId);
             // Add the ICE candidate received from the client to the peer connection
             const peerConnection = this.peerConnectionByClientId[remoteClientId];
             peerConnection.addIceCandidate(candidate);
             this.peerConnectionByClientId = {...this.peerConnectionByClientId, [remoteClientId]: peerConnection}
         });
 
-        this.signalingClient.on('close', () => {
-            console.log('[MASTER] Disconnected from signaling channel');
+        this.signalingClient.on(`close`, () => {
+            console.log(`[${this.clientId}-MASTER] Disconnected from signaling channel`);
             // RECONNECT?
         });
 
-        console.log('setting signalingClient event handler for "error"')
-        this.signalingClient.on('error', () => {
-            console.error('[MASTER] Signaling client error');
+        console.log(`setting signalingClient event handler for "error"`)
+        this.signalingClient.on(`error`, () => {
+            console.error(`[${this.clientId}-MASTER] Signaling client error`);
         });
 
         this.signalingClient.open();
-        console.log('finished setting up master')
+        console.log(`finished setting up master`)
     }
 
+    
+            // var senders = []
+            // var tracks = []
+            // tracks.push(this.localStream.getTracks())
+            // tracks.flat().forEach(track => {
+            //     console.log(`adding local track:`, track)
+            //     senders.push(peerConnection.addTrack(track, this.localStream))
+            // });
+            // this.webcamSendersByClientId[remoteClientId] = senders
+
+
     stopMaster = () => {
-        console.log('[MASTER] Stopping viewer connection');
+        console.log(`[${this.clientId}-MASTER] Stopping viewer connection`);
         if (this.signalingClient) {
             this.signalingClient.close();
             this.signalingClient = null;
@@ -205,13 +207,40 @@ class Master {
         })
     }
 
-    
-
-    addStream = (stream) => {
-        stream.getTracks().forEach(track => {
-            this.pc.addTrack(track, stream)
-        })
+    toggleWebcam = (stream) => {
+        console.log(`toggling webcam`)
+        console.log(stream)
+        if (stream) { // must be turnign stream on if it`s provided
+            console.log(`adding webcam`)
+            Object.keys(this.peerConnectionByClientId).forEach(clientId=>{
+                let senders = []
+                stream.getTracks().forEach(track=>{
+                    senders.push(this.peerConnectionByClientId[clientId].addTrack(track, stream))
+                })
+                this.webcamSendersByClientId[clientId] = senders
+            })
+        }
+        else {
+            Object.keys(this.peerConnectionByClientId).forEach(clientId=>{
+                let pc = this.peerConnectionByClientId[clientId]
+                this.webcamSendersByClientId[clientId].forEach(
+                    sender=>pc.removeTrack(sender)
+                )
+            })
+        }
     }
+
+    // addStream = (stream) => {
+    //     stream.getTracks().forEach(track => {
+    //         this.pc.addTrack(track, stream)
+    //     })
+    // }
+
+    // removeStream = senders => {
+    //     senders.forEach(sender=>{
+
+    //     })
+    // }
 
 }
 

@@ -2,7 +2,7 @@ import AWS from "aws-sdk"
 import { SignalingClient, Role } from "amazon-kinesis-video-streams-webrtc"
 import { Auth } from "aws-amplify"
 
-const region = 'eu-west-1'
+const region = `eu-west-1`
 const natTraversalDisabled = false
 const forceTURN = true
 const openDataChannel = true
@@ -27,13 +27,13 @@ class Viewer {
         const describeSignalingChannelResponse = await kinesisVideoClient
         .describeSignalingChannel({ChannelName: this.channel}).promise()
 
-        const channelARN = describeSignalingChannelResponse.ChannelInfo.channelARN
+        const channelARN = describeSignalingChannelResponse.ChannelInfo.ChannelARN
 
         const getSignalingChannelEndpointResponse = await kinesisVideoClient
-        .getSignalingChannelEndpointResponse({
-            channelARN: channelARN, 
+        .getSignalingChannelEndpoint({
+            ChannelARN: channelARN, 
             SingleMasterChannelEndpointConfiguration: {
-                Protocols: ['WSS', 'HTTPS'],
+                Protocols: [`WSS`, `HTTPS`],
                 Role: Role.VIEWER
             }
         }).promise()
@@ -77,25 +77,25 @@ class Viewer {
 
         const configuration = {
             iceServers,
-            iceTransportPolicy: forceTURN ? 'relay' : 'all'
+            iceTransportPolicy: forceTURN ? `relay` : `all`
         }
 
-        this.pc = RTCPeerConnection(configuration)
+        this.pc = new RTCPeerConnection(configuration)
 
         if (openDataChannel) {
-            this.dataChannel = this.pc.createDataChannel('kvsDataChannel')
-            this.pc.ondatachannel = e => {e.channel.onmessage = (msg)=>{console.log('[VIEWER] remote data msg:', msg)}}
+            this.dataChannel = this.pc.createDataChannel(`kvsDataChannel`)
+            this.pc.ondatachannel = e => {e.channel.onmessage = (msg)=>{console.log(`[${this.clientId}-VIEWER] remote data msg:`, msg)}}
         }
 
         this.pc.oniceconnectionstatechange = () => {
-            if ( this.pc.iceConnectionState == 'disconnected') {
+            if ( this.pc.iceConnectionState == `disconnected`) {
                 this.pc.close() // HUH MAYBE SHOULDNT CLOSE
                 this.setStreams(null, this.channel)
             }
         }
 
-        this.signalingClient.on('open', async () => {
-            console.log('[VIEWER] connected to signaling service')
+        this.signalingClient.on(`open`, async () => {
+            console.log(`[${this.clientId}-VIEWER] connected to signaling service`)
             await this.pc.setLocalDescription(
                 await this.pc.createOffer({offerToReceiveAudio: true, offerToReceiveVideo: true})
             )
@@ -105,25 +105,25 @@ class Viewer {
             }
         })
 
-        this.signalingClient.on('sdpAnswer', async answer => {
+        this.signalingClient.on(`sdpAnswer`, async answer => {
             await this.pc.setRemoteDescription(answer)
         })
 
-        this.signalingClient.on('iceCandidate', candidate => {
+        this.signalingClient.on(`iceCandidate`, candidate => {
             this.pc.addIceCandidate(candidate)
         })
 
-        this.signalingClient.on('close', () => {
-            console.log(['[VIEWER] disconnected from signaling channel'])
+        this.signalingClient.on(`close`, () => {
+            console.log([`[${this.clientId}-VIEWER] disconnected from signaling channel`])
             // MAYBE NEEDS REOPENING
         })
 
-        this.signalingClient.on('error', (err) => {
-            console.log('[VIEWER] Signaling client error:', err)
+        this.signalingClient.on(`error`, (err) => {
+            console.log(`[${this.clientId}-VIEWER] Signaling client error:`, err)
         })
 
-        this.pc.addEventListener('icecandidate', (c)=>{
-            console.log(c)
+        this.pc.addEventListener(`icecandidate`, (c)=>{
+            // console.log(c)
             var candidate = c.candidate
             if (candidate) {
                 if (useTrickleICE) {
@@ -131,7 +131,7 @@ class Viewer {
                         this.signalingClient.sendIceCandidate(candidate)
                     }
                     catch (err) {
-                        console.log('[VIEWER] Error in sending ice candidate')
+                        console.log(`[${this.clientId}-VIEWER] Error in sending ice candidate`)
                         console.log(err)
                     }
                 }
@@ -143,17 +143,17 @@ class Viewer {
             }
         })
 
-        this.pc.addEventListener('track', event => {
-            console.log('[VIEWER] received track')
+        this.pc.addEventListener(`track`, event => {
+            console.log(`[${this.clientId}-VIEWER] received track`)
             this.remoteStreams = [...this.remoteStreams, event.streams[0]]
             this.setStreams(this.remoteStreams, this.channel) // CHANNEL WAS NOT GIVEN HERE
         })
 
         this.pc.onnegotiationneeded = async () => {
-            console.log('[VIEWER] NEGOTIATION NEEDED')
+            console.log(`[${this.clientId}-VIEWER] NEGOTIATION NEEDED`)
             // Create an SDP offer to send to the master
-            await peerConnection.setLocalDescription(
-                await peerConnection.createOffer({
+            await this.pc.setLocalDescription(
+                await this.pc.createOffer({
                     offerToReceiveAudio: true,
                     offerToReceiveVideo: true,
                 }),
@@ -165,7 +165,7 @@ class Viewer {
     }
 
     stopViewer = () => {
-        console.log('[VIEWER] Stopping viewer connection');
+        console.log(`[${this.clientId}-VIEWER] Stopping viewer connection`);
         if (this.signalingClient) {
             this.signalingClient.close();
             this.signalingClient = null;

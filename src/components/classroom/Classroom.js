@@ -12,6 +12,7 @@ import code from "../../images/code.png"
 import ClassLobby from "./ClassLobby"
 import SponsorBanner from "./SponsorBanner"
 import adarga_logo from "../../images/brands/adarga_logo_whiteout.png"
+import TestUI from "./RTCTests/TestUI"
 
 const adarga = {
     logo: adarga_logo
@@ -37,6 +38,7 @@ const AppRoutes = (props) => {
                 <Route path="/classroom/mem4" render={()=>{return <Student mem={4} />}} />
                 <Route path="/classroom/mem5" render={()=>{return <Student mem={5} />}} />
                 <Route path="/classroom/mem6" render={()=>{return <Student mem={6} />}} />
+                <Route path="/classroom/test" component={TestUI} />
 
                 <Route path='/classroom' exact render={()=>{
                     return<TileGrid tiles={[
@@ -70,16 +72,17 @@ const AppRoutes = (props) => {
                             title: "Member 6",
                             icon: code
                         },
-                        // {
-                        //     onClick: ()=>{window.open("/classroom/lobbyswitcher")},
-                        //     title: "Lobbyswitcher",
-                        //     icon: code
-                        // },
                         {
                             onClick: ()=>{window.open("/classroom/teacher")},
                             title: "Teacher",
                             icon: code
-                        },]}
+                        },
+                        {
+                            onClick: ()=>{window.open("/classroom/test")},
+                            title: "Test",
+                            icon: code
+                        }
+                        ,]}
                         />
 
                     }}/>
