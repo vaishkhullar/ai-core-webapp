@@ -253,6 +253,7 @@ export default class Viewer {
                     offerToReceiveVideo: true,
                 }),
             );
+            alert('negotiation needed')
         }
 
         // console.log('[VIEWER] Starting viewer connection');
