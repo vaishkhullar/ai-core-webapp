@@ -31,7 +31,7 @@ const AppRoutes = (props) => {
             />
             <div css={css`width: 80%; margin: auto;`}> {/*for sidebar responsiveness*/}
                 <Route path='/classroom' exact component={LobbyHolder} />
-                <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
+                {/* <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
                 <Route path="/classroom/mem2" render={()=>{return <Student mem={2} />}} />
                 <Route path="/classroom/mem3" render={()=>{return <Student mem={3} />}} />
                 <Route path="/classroom/mem4" render={()=>{return <Student mem={4} />}} />
@@ -87,7 +87,7 @@ const AppRoutes = (props) => {
                     ]}
                         />
 
-                    }}/>
+                    }}/> */}
 
                 {/* <Route path="/classroom/mem1" render={()=>{return <Student mem={1} />}} />
                 <Route path="/classroom/mem2" render={()=>{return <Student mem={2} />}} />
