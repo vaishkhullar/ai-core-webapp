@@ -191,7 +191,7 @@ class Client {
                 console.log(this.currentLobby)
                 this.setLobby(this.currentLobby)
                 console.log(this.viewers)
-                alert('member left lobby')
+                // alert('member left lobby')
                 return
             case "member-joined-lobby":
                 var new_member = body.content

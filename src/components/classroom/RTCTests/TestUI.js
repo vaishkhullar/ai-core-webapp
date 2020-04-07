@@ -49,13 +49,15 @@ const screenShareOptions = {
 class User extends Component {
     constructor(props) {
         super(props)
-        this.viewers = {}
+        this.channel = `streamline-${this.props.idx}`
+        this.id = `id-${this.props.idx}`
         this.master = new Master(
-            `streamline-${this.props.idx}`,
-            `id-${this.props.idx}`
+            this.channel,
+            this.id
         )
         this.state = {
             remoteStreams: {},
+            viewers: {},
             webcam: null
         }
     }
@@ -85,15 +87,15 @@ class User extends Component {
 
     connectTo = (channel) => {
         console.log('connecting to:', channel)
-        this.viewers = {
-            ...this.viewers,
+        this.setState({viewers: {
+            ...this.state.viewers,
             [channel]: new Viewer(
                 channel,
-                `id-${this.props.idx}`,
+                this.id,
                 this.setStreams
             )
-        }
-        console.log(this.viewers)
+        }})
+        console.log(this.id, this.viewers)
     }
 
     render() {
@@ -101,11 +103,13 @@ class User extends Component {
             <div css={style}>
                 <div className="title">
                     {this.props.idx}
+                    {this.state.channel}
                 </div>
                 <div className="localstreams">
                     {this.state.webcam?<VideoOutput video={this.state.webcam} muted={true}/>:null}
                     {this.state.screenshare?<VideoOutput video={this.state.screenshare} muted={true}/>:null}
                 </div>
+                {this.state.remoteStreams.length}
                 <div className="remotestreams">
                     {Object.values(this.state.remoteStreams).map(stream=>{return <VideoOutput video={stream}/>})}
                 </div>
@@ -113,7 +117,7 @@ class User extends Component {
                 {
                     this.props.connect_to.map(idx=>{
                         return <Button 
-                            text={this.viewers[`streamline-${idx}`] ?`Disconnect from ${idx}`: `Connect to ${idx}`} 
+                            text={this.state.viewers[`streamline-${idx}`] ?`Disconnect from ${idx}`: `Connect to ${idx}`} 
                             onClick={()=>{this.connectTo(`streamline-${idx}`)}}
                         />
                     })
