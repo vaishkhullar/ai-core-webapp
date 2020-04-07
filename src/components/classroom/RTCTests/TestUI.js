@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import { css, jsx } from "@emotion/core"
-import Master from "./Master"
 /** @jsx jsx */
 import { Button } from "mvp-webapp"
 import { VideoOutput } from "../VideoOutput"
-import Viewer from "./Viewer"
+import Viewer from "./SignalingChannelViewer"
+import Master from "./SignalingChannelMaster"
 
 const style = css`
     video: height: 200px;
@@ -16,10 +16,24 @@ const style = css`
     align-items: center;
     margin: 20px;
     padding: 10px;
+    color: black;
 
     .localstreams {
         video {
             height: 100px;
+        }
+    }
+
+    .remotestreams {
+        video {
+            height: 100px;
+        }
+
+        .remotestream {
+            // background-color: black;
+            display: flex;
+            flex-direction: column;
+            border: 3px solid black;
         }
     }
 
@@ -36,6 +50,7 @@ const webcamOptions = {
             mediaSource: "screen"
         },
         audio: true,
+        audio: false,
 }
 const screenShareOptions = {
     video: {
@@ -51,10 +66,6 @@ class User extends Component {
         super(props)
         this.channel = `streamline-${this.props.idx}`
         this.id = `id-${this.props.idx}`
-        this.master = new Master(
-            this.channel,
-            this.id
-        )
         this.state = {
             remoteStreams: {},
             viewers: {},
@@ -63,6 +74,14 @@ class User extends Component {
     }
 
     componentDidMount = async () => {
+        var webcam = await navigator.mediaDevices.getUserMedia(webcamOptions)
+        this.master = new Master(
+            webcam,
+            null,
+            this.channel,
+            (msg)=>{console.log('remote data msg:', msg)},
+            report => {console.log('stats report:', report)}
+        )
     }
 
     setStreams = (streams , channel) => {
@@ -91,8 +110,9 @@ class User extends Component {
             ...this.state.viewers,
             [channel]: new Viewer(
                 channel,
-                this.id,
-                this.setStreams
+                (streams)=>{this.setStreams(streams, channel)},
+                (msg)=>{console.log('remote data msg:', msg)},
+                report => {console.log('stats report:', report)}
             )
         }})
         console.log(this.id, this.viewers)
@@ -110,8 +130,14 @@ class User extends Component {
                     {this.state.screenshare?<VideoOutput video={this.state.screenshare} muted={true}/>:null}
                 </div>
                 {this.state.remoteStreams.length}
+                {JSON.stringify(this.state.remoteStreams)}
                 <div className="remotestreams">
-                    {Object.values(this.state.remoteStreams).map(stream=>{return <VideoOutput video={stream}/>})}
+                    {Object.keys(this.state.remoteStreams).map(channel=>{
+                        return <div className="remotestream">
+                            {channel}
+                            {this.state.remoteStreams[channel].map(stream=>{return <VideoOutput video={stream}/>})}
+                        </div>
+                    })}
                 </div>
                 <Button text={this.state.webcam ? 'Stop webcam': 'Start webcam'} onClick={this.toggleWebcam} />
                 {

@@ -38,6 +38,9 @@ class Client {
             [channel]: newStreams
         }
         this.setStreams(newStreams, channel)
+        console.log(newStreams)
+        console.log(channel)
+        // alert('adding streams')
     }
 
     getSignalingChannel = async () => {

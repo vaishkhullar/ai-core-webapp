@@ -168,6 +168,10 @@ class Master {
             this.peerConnectionByClientId = {...this.peerConnectionByClientId, [remoteClientId]: peerConnection}
         });
 
+        this.signalingClient.on('open', async () => {
+            console.log(`[${this.clientId}-MASTER] Connected to signaling channel`)
+        })
+
         this.signalingClient.on(`close`, () => {
             console.log(`[${this.clientId}-MASTER] Disconnected from signaling channel`);
             // RECONNECT?
