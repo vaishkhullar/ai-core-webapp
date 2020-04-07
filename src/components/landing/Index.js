@@ -54,7 +54,6 @@ class Home extends Component{
                 heros={heros}
                 sections={[
                     // <WhyTheAICore />,
-                    <Opportunities />,
                     <MainWorkshops />,
                     <WorkshopsPreview />,
                     <Testimonials />

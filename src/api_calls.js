@@ -61,7 +61,7 @@ export const makePostRequest = (endpoint, body, callback, handleErr=(err)=>{cons
             .then(
                 (data) => {
                     // console.log(`Response from ${endpoint}:`)
-                    // console.log('RAW RESPONSE:', data)
+                    console.log('RAW RESPONSE:', data)
                     data = data.json()
                     return data
                 }
