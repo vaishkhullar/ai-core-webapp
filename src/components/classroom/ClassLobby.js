@@ -53,7 +53,7 @@ class ClassLobby extends Component {
                     volume='0'
                 />
                 <div className="forum">
-                    <Forum id='transformers-04-04-2020' />
+                    <Forum id='RNNs-07-04-2020' />
 
                 </div>
             {/* </div> */}
