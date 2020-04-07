@@ -266,9 +266,6 @@ export default class Master {
                 if (peerConnection.iceConnectionState == 'disconnected') {
                     console.log(`client ${remoteClientId} disconnected`)
                     peerConnection.close()
-                    // var remoteStreamsByClientId = this.remoteStreamsByClientId
-                    // delete remoteStreamsByClientId[remoteClientId] // remove client's remote streams 
-                    // this.remoteStreamsByClientId = remoteStreamsByClientId
                 }
             }
             
@@ -276,6 +273,12 @@ export default class Master {
             console.log('setting peerConnection event handler for "onnegotiationneeded"')
             peerConnection.onnegotiationneeded = async () => {
                 console.log('NEGOTIATION NEEDED')
+                await peerConnection.setLocalDescription(
+                    await peerConnection.createOffer({
+                        offerToReceiveAudio: true,
+                        offerToReceiveVideo: true,
+                    }),
+                );
             }
 
             console.log('[MASTER] Generating ICE candidates for client: ' + remoteClientId);
