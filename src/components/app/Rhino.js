@@ -156,19 +156,18 @@ export default function Rhino(props){
                     Crowdsource intelligence to combat rhino poaching in Botswana
                 </div>
                 <div className="subtitle">
-                    In partnership with Adarga, we are going to crowdsource a dataset to help military operations to tackle rhino poaching in Botswana and North of the Zambezi river.
-                    Phase 1 consists of finding URLs that can point to potentially useful data sources.
-                    The next phase will consist of extracting data from these links, categorising it and cleaning it.
-                    This next phase will being within the next 2 weeks. 
+                    In partnership with Adarga, we are going to crowdsource a dataset to help military operations to tackle rhino poaching in Botswana and North of the Zambezi river. 
+                    Phase 1 consists of finding URLs that can point to potentially useful data sources. The next phase will consist of extracting data from these links, categorising it and cleaning it. 
+                    This next phase will being within the next 2 weeks.
                     <br/>
                     <br/>
                     All kinds of resources may be useful. 
                     For example you can submit articles, research papers, links to sources of satellite imagery or other telemetry data
                     <br/>
                     <br/>
-                    A useful final output of this project would be code for producing different geographical heatmap overlays which then could be combined.
-                    For example, we could produce a heatmap of likely rhino watering holes, or heatmaps of difficult terrain for either poachers or rhinos.
-                    The eventual combination of these heatmaps will hopefully be able to inform where forces on the ground should deploy their resources. 
+                    A useful final output of this project would be code for producing different geographical heatmap overlays which then could be combined. 
+                    For example, we could produce a heatmap of likely rhino watering holes, or heatmaps of difficult terrain for either poachers or rhinos. 
+                    The eventual combination of these heatmaps will hopefully be able to inform where forces on the ground should deploy their resources.
                 </div>
                 <div className="field-container">
                 <div css={bar_style}>
