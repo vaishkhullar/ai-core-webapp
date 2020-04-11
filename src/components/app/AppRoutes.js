@@ -15,16 +15,16 @@ import Projects from "./Projects"
 import Classroom from "../classroom/Classroom"
 import Student from "../classroom/NewStudent"
 import LobbyHolder from "../classroom/LobbyHolder"
-
 import { css, jsx } from "@emotion/core"
 import RepCounter from "./RepCounter"
 import Applied from "./Applied"
+import Contribute from "./Contribute"
 /** @jsx jsx */
 
 const AppRoutes = (props) => {
     return (
         <>
-            <AskForDetails />
+            {/* <AskForDetails /> */}
             <Navbar btn='Menu' action={props.openMenu} back={'/app'} root='/app' roots={['/app']}/>
             <Sidebar items={[
                 {title: 'Profile', faIcon: faUser, to: '/app/profile'},
@@ -51,6 +51,7 @@ const AppRoutes = (props) => {
                 <Route path="/app/notifications" component={NotificationPage} />
                 <Route path="/app/hacking" component={Student} />
                 <Route path="/app/applied" component={Applied} />
+                <Route path="/app/contribute" component={Contribute} />
                 {/* <Route path='/app/classroom' component={LobbyHolder} /> */}
             </div>
         </>

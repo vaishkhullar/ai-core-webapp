@@ -209,24 +209,6 @@ export default class Master {
             });
             this.webcamSendersByClientId[remoteClientId] = senders
 
-            // console.log('setting up webcam stream')
-            // var senders = []
-            // console.log(this.localStream.getTracks())
-            // console.log(this.localScreen.getTracks())
-            // alert('yo')
-            // this.localStream.getTracks().forEach(track => {
-            //     console.log('adding local track:', track)
-            //     senders.push(peerConnection.addTrack(track, this.localStream))
-            // });
-            // this.webcamSendersByClientId[remoteClientId] = senders
-            // console.log('setting up screenshare stream')
-            // var screenshare_senders = []
-            // this.localScreen.getTracks().forEach(track => {
-            //     console.log('adding local track:', track)
-            //     screenshare_senders.push(peerConnection.addTrack(track, this.localStream))
-            // });
-            // this.screenshareSendersByClientId[remoteClientId] = screenshare_senders
-
             // console.log('pc before setting remote desc:', peerConnection)
             console.log('SDP offer:', offer)
             await peerConnection.setRemoteDescription(offer);
